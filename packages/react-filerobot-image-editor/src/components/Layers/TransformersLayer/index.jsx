@@ -8,6 +8,8 @@ import { TOOLS_IDS, TRANSFORMERS_LAYER_ID } from 'utils/constants';
 import CropTransformer from './CropTransformer';
 import NodesTransformer from './NodesTransformer';
 
+// NodesTransformer transformer for addons(annotations)
+// CropTransformer separate transformer for crop tab
 const TransformersLayer = () => {
   const { toolId, shownImageDimensions } = useStore();
 

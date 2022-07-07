@@ -13,6 +13,7 @@ const SATURATION_CONST = -0.2;
  */
 function Aden(imageData) {
   const pixels = imageData.data; //  [0, 1, 2, 3,...] => [r, g, b, a, ...]
+  debugger
   const len = pixels.length;
 
   for (let i = 0; i < len; i += 4) {

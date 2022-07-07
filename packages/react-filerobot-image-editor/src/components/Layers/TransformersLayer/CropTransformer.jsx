@@ -1,19 +1,19 @@
 /** External Dependencies */
-import React, { useEffect, useRef } from 'react';
-import { Ellipse, Image, Rect, Transformer } from 'react-konva';
-import Konva from 'konva';
+import React, { useEffect, useRef } from "react";
+import { Ellipse, Image, Rect, Transformer } from "react-konva";
+import Konva from "konva";
 
 /** Internal Dependencies */
-import { useStore } from 'hooks';
-import { SET_CROP, SET_FEEDBACK } from 'actions';
+import { useStore } from "hooks";
+import { SET_CROP, SET_FEEDBACK } from "actions";
 import {
   CUSTOM_CROP,
   ELLIPSE_CROP,
   FEEDBACK_STATUSES,
   ORIGINAL_CROP,
-  TOOLS_IDS,
-} from 'utils/constants';
-import { boundDragging, boundResizing } from './cropAreaBounding';
+  TOOLS_IDS
+} from "utils/constants";
+import { boundDragging, boundResizing } from "./cropAreaBounding";
 
 const CropTransformer = () => {
   const {
@@ -25,14 +25,16 @@ const CropTransformer = () => {
     adjustments: { crop = {}, isFlippedX, isFlippedY } = {},
     resize = {},
     config,
-    t,
+    t
   } = useStore();
+
   const cropShapeRef = useRef();
   const cropTransformerRef = useRef();
   const tmpImgNodeRef = useRef();
   const shownImageDimensionsRef = useRef();
   const cropConfig = config[TOOLS_IDS.CROP];
-  const cropRatio = crop.ratio || cropConfig.ratio;
+  // const cropRatio = crop.ratio || cropConfig.ratio;
+  const cropRatio = 1.5;
   const isCustom = cropRatio === CUSTOM_CROP;
   const isEllipse = cropRatio === ELLIPSE_CROP;
 
@@ -41,12 +43,34 @@ const CropTransformer = () => {
       ? originalImage.width / originalImage.height
       : cropRatio;
 
-  const saveCrop = ({ width, height, x, y }, noHistory) => {
+  //---------- initial crop state
+  useEffect(() => {
+    const cropWidth = shownImageDimensions.width / 2;
+    const cropHeight = shownImageDimensions.height / 2;
+    const newCrop = {
+      x: (shownImageDimensions.width - cropWidth) / 2,
+      y: (shownImageDimensions.height - cropHeight) / 2,
+      width: cropWidth,
+      height: cropHeight
+    };
+  debugger
+    dispatch({
+      type: SET_CROP,
+      payload: {
+        ...crop,
+        ...newCrop,
+        dismissHistory: false
+      }
+    });
+  }); // todo add dependencies
+  //----------
+
+  const saveCrop = ({ width, height, x, y }, noHistory) => { //transformer
     const newCrop = {
       x: isFlippedX ? shownImageDimensions.width - x - width : x,
       y: isFlippedY ? shownImageDimensions.height - y - height : y,
       width,
-      height,
+      height
     };
 
     const isOldCropBiggerThanResize =
@@ -61,10 +85,10 @@ const CropTransformer = () => {
         type: SET_FEEDBACK,
         payload: {
           feedback: {
-            message: t('cropSizeLowerThanResizedWarning'),
-            status: FEEDBACK_STATUSES.WARNING,
-          },
-        },
+            message: t("cropSizeLowerThanResizedWarning"),
+            status: FEEDBACK_STATUSES.WARNING
+          }
+        }
       });
     }
 
@@ -73,8 +97,8 @@ const CropTransformer = () => {
       payload: {
         ...crop,
         ...newCrop,
-        dismissHistory: noHistory,
-      },
+        dismissHistory: noHistory
+      }
     });
   };
 
@@ -89,7 +113,7 @@ const CropTransformer = () => {
       width: cropWidth,
       height: cropHeight,
       x: crop.x ?? 0,
-      y: crop.y ?? 0,
+      y: crop.y ?? 0
     };
 
     saveCrop(
@@ -98,9 +122,9 @@ const CropTransformer = () => {
         attrs,
         { ...imageDimensions, abstractX: 0, abstractY: 0 },
         isCustom || isEllipse ? false : getProperCropRatio(),
-        cropConfig,
+        cropConfig
       ),
-      true,
+      true
     );
   };
 
@@ -124,7 +148,7 @@ const CropTransformer = () => {
       const imageDimensions = shownImageDimensionsRef.current;
       saveBoundedCropWithLatestConfig(
         crop.width ?? imageDimensions.width,
-        crop.height ?? imageDimensions.height,
+        crop.height ?? imageDimensions.height
       );
     }
   }, [cropRatio]);
@@ -147,17 +171,17 @@ const CropTransformer = () => {
     }
   }, [shownImageDimensions]);
 
-  if (!designLayer) {
+  if ( !designLayer) {
     return null;
   }
 
   const enabledAnchors =
     isCustom || isEllipse
       ? undefined
-      : ['top-left', 'bottom-left', 'top-right', 'bottom-right'];
+      : ["top-left", "bottom-left", "top-right", "bottom-right"];
 
-  const saveCropFromEvent = (e, noHistory = false) => {
-    if (!e.target) {
+  const saveCropFromEvent = (e, noHistory = false) => { //apply crop from transform end
+    if ( !e.target) {
       return;
     }
 
@@ -166,52 +190,53 @@ const CropTransformer = () => {
         width: e.target.width() * e.target.scaleX(),
         height: e.target.height() * e.target.scaleY(),
         x: e.target.x(),
-        y: e.target.y(),
+        y: e.target.y()
       },
-      noHistory,
+      noHistory
     );
   };
 
   const limitDragging = (e) => {
     const currentCropShape = e.target;
     currentCropShape.setAttrs(
-      boundDragging(currentCropShape.attrs, shownImageDimensionsRef.current),
+      boundDragging(currentCropShape.attrs, shownImageDimensionsRef.current)
     );
   };
 
   let attrs;
-  if (!crop.width && !crop.height) {
+  if ( !crop.width && !crop.height) {
     const scaleFactor =
       shownImageDimensions.scaledBy < 1 ? shownImageDimensions.scaledBy : 1;
     const unscaledImgDimensions = {
       ...shownImageDimensions,
       width: shownImageDimensions.width / scaleFactor,
-      height: shownImageDimensions.height / scaleFactor,
+      height: shownImageDimensions.height / scaleFactor
     };
     attrs = boundResizing(
       unscaledImgDimensions,
       { ...unscaledImgDimensions, x: 0, y: 0 },
       { ...unscaledImgDimensions, abstractX: 0, abstractY: 0 },
       isCustom || isEllipse ? false : getProperCropRatio(),
-      cropConfig,
+      cropConfig
     );
   } else {
     attrs = crop;
   }
 
   const { x = 0, y = 0, width, height } = attrs;
+
   const cropShapeProps = {
     x: isFlippedX ? shownImageDimensions.width - x - width : x,
     y: isFlippedY ? shownImageDimensions.height - y - height : y,
     ref: cropShapeRef,
-    fill: '#FFFFFF',
+    fill: "#FFFFFF",
     scaleX: 1,
     scaleY: 1,
-    globalCompositeOperation: 'destination-out',
-    onDragEnd: saveCropFromEvent,
-    onDragMove: limitDragging,
-    onTransformEnd: saveCropFromEvent,
-    draggable: true,
+    globalCompositeOperation: "destination-out"
+    // onDragEnd: saveCropFromEvent,
+    // onDragMove: limitDragging,
+    // onTransformEnd: saveCropFromEvent,
+    // draggable: true
   };
 
   // ALT is used to center scaling
@@ -237,7 +262,7 @@ const CropTransformer = () => {
           radiusY={height / 2}
           offset={{
             x: -width / 2,
-            y: -height / 2,
+            y: -height / 2
           }}
         />
       ) : (
@@ -252,23 +277,25 @@ const CropTransformer = () => {
         anchorCornerRadius={7}
         enabledAnchors={enabledAnchors}
         ignoreStroke={false}
-        anchorStroke={theme.palette['accent-primary']}
-        anchorFill={theme.palette['access-primary']}
+        anchorStroke={theme.palette["accent-primary"]}
+        anchorFill={theme.palette["access-primary"]}
         anchorStrokeWidth={2}
-        borderStroke={theme.palette['accent-primary']}
+        borderStroke={theme.palette["accent-primary"]}
         borderStrokeWidth={2}
         borderDash={[4]}
-        keepRatio={!isCustom || !isEllipse}
+        keepRatio={ !isCustom || !isEllipse}
         ref={cropTransformerRef}
-        boundBoxFunc={(absOldBox, absNewBox) =>
-          boundResizing(
+        boundBoxFunc={(absOldBox, absNewBox) => {
+          console.log(absOldBox);
+          console.log(absNewBox);
+          return boundResizing(
             absOldBox,
-            absNewBox,
+            absOldBox,
             shownImageDimensionsRef.current,
             isCustom || isEllipse ? false : getProperCropRatio(),
-            cropConfig,
-          )
-        }
+            cropConfig
+          );
+        }}
       />
     </>
   );

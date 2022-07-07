@@ -13,6 +13,7 @@ export const boundDragging = (newDimensions, allowedArea) => {
   };
 };
 
+//todo crop colapce with negative value?
 export const boundResizing = (
   oldDimensions,
   newDimensions,
