@@ -19,6 +19,10 @@ const AppProvider = ({ children, config = {} }) => {
     config,
   );
 
+  useEffect(()=>{
+    console.log(state);
+  },[state])
+
   useEffect(() => {
     isFieMounted = true;
 

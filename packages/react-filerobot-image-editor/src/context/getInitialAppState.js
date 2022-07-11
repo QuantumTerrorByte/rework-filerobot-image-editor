@@ -1,14 +1,14 @@
 /** Internal Dependencies */
-import { DEFAULT_ZOOM_FACTOR, POINTER_ICONS, TOOLS_IDS } from 'utils/constants';
-import filterStrToClass from 'utils/filterStrToClass';
-import finetunesStrsToClasses from 'utils/finetunesStrsToClasses';
+import { DEFAULT_ZOOM_FACTOR, POINTER_ICONS, TOOLS_IDS } from "utils/constants";
+import filterStrToClass from "utils/filterStrToClass";
+import finetunesStrsToClasses from "utils/finetunesStrsToClasses";
 
 const getInitialAppState = (config = {}) => {
   const loadedConfigPrepared = { ...config.loadableDesignState };
 
   if (Array.isArray(loadedConfigPrepared.finetunes)) {
     loadedConfigPrepared.finetunes = finetunesStrsToClasses(
-      loadedConfigPrepared.finetunes,
+      loadedConfigPrepared.finetunes
     );
   }
 
@@ -17,11 +17,17 @@ const getInitialAppState = (config = {}) => {
   }
 
   return {
+    backgroundX: 0,
+    backgroundY: 0,
+    backgroundRotation: 0,
+    backgroundWidthAddon: 0,
+    backgroundHeightAddon: 0,
+    cropRatio: 1.5,
     // --- Start of design states ---
     imgSrc:
-      typeof config.source === 'string'
+      typeof config.source === "string"
         ? config.source
-        : config.source?.src || '',
+        : config.source?.src || "",
     finetunes: [],
     finetunesProps: {},
     filter: null,
@@ -33,11 +39,11 @@ const getInitialAppState = (config = {}) => {
         width: null,
         height: null,
         x: 0,
-        y: 0,
+        y: 0
       },
       isFlippedX: false,
       isFlippedY: false,
-      rotation: 0,
+      rotation: 0
     },
     annotations: {},
     resize: {},
@@ -49,7 +55,7 @@ const getInitialAppState = (config = {}) => {
     zoom: {
       factor: DEFAULT_ZOOM_FACTOR,
       x: null,
-      y: null,
+      y: null
     },
     isLoadingGlobally: true,
     selectionsIds: [],
@@ -66,7 +72,7 @@ const getInitialAppState = (config = {}) => {
     futureDesignStates: [],
     isResetted: true,
     haveNotSavedChanges: false,
-    latestColor: undefined,
+    latestColor: undefined
   };
 };
 

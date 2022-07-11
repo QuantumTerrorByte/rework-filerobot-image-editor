@@ -18,6 +18,7 @@ const setCrop = (state, payload) => {
     ratioFolderKey: payload.ratioFolderKey,
   };
 
+  //check if old === new
   if (
     oldCrop.x === newCrop.x &&
     oldCrop.y === newCrop.y &&

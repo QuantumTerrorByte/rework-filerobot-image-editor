@@ -27,7 +27,7 @@ import { useStore } from 'hooks';
 import { endTouchesZooming, zoomOnTouchesMove } from './touchZoomingEvents';
 import { StyledCanvasNode } from './MainCanvas.styled';
 
-const ZOOM_DELTA_TO_SCALE_CONVERT_FACTOR = 0.006;
+const ZOOM_DELTA_TO_SCALE_CONVERT_FACTOR = 0.001;
 
 const CanvasNode = ({ children }) => {
   useStrictMode(true);
@@ -132,7 +132,8 @@ const CanvasNode = ({ children }) => {
 
   const resetPanningAbility = () =>
     setIsPanningEnabled(
-      tabId !== TABS_IDS.ANNOTATE || tabId === TABS_IDS.WATERMARK,
+      // tabId !== TABS_IDS.ANNOTATE || tabId === TABS_IDS.WATERMARK,
+      false
     );
 
   const endTouchesZoomingEnablePanning = () => {
@@ -181,9 +182,10 @@ const CanvasNode = ({ children }) => {
 
   useEffect(() => {
     setIsPanningEnabled(
-      tabId !== TABS_IDS.ANNOTATE &&
-        tabId !== TABS_IDS.WATERMARK &&
-        zoom.factor > defaultZoomFactor,
+      // tabId !== TABS_IDS.ANNOTATE &&
+      //   tabId !== TABS_IDS.WATERMARK &&
+      //   zoom.factor > defaultZoomFactor,
+      false
     );
 
     // Remove & register the event on changing tabId, zoom.factor, defaultZoomFactor to always access latest state.

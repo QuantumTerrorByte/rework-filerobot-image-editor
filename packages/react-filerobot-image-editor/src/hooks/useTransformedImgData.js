@@ -79,8 +79,10 @@ const useTransformedImgData = () => {
     designLayer.setAttr('isSaving', true);
 
     const preparedCanvas = designLayer.getStage().clone({
-      width: originalImage.width,
-      height: originalImage.height,
+      // width: originalImage.width,
+      // height: originalImage.height,
+      width: 1200,
+      height: 700,
       scaleX: isFlippedX ? -1 : 1,
       scaleY: isFlippedY ? -1 : 1,
     });

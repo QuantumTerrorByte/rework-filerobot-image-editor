@@ -1,6 +1,6 @@
-import compareRatios from 'utils/compareRatios';
-import restrictNumber from 'utils/restrictNumber';
-import toPrecisedFloat from 'utils/toPrecisedFloat';
+import compareRatios from "utils/compareRatios";
+import restrictNumber from "utils/restrictNumber";
+import toPrecisedFloat from "utils/toPrecisedFloat";
 
 export const boundDragging = (newDimensions, allowedArea) => {
   const maxAllowedX =
@@ -9,23 +9,23 @@ export const boundDragging = (newDimensions, allowedArea) => {
     allowedArea.height - (newDimensions.radiusY * 2 || newDimensions.height);
   return {
     x: toPrecisedFloat(Math.min(Math.max(newDimensions.x, 0), maxAllowedX)),
-    y: toPrecisedFloat(Math.min(Math.max(newDimensions.y, 0), maxAllowedY)),
+    y: toPrecisedFloat(Math.min(Math.max(newDimensions.y, 0), maxAllowedY))
   };
 };
 
-//todo crop colapce with negative value?
+//todo crop collapse with negative value?
 export const boundResizing = (
   oldDimensions,
   newDimensions,
   allowedArea,
   ratio,
-  cropRestrictions = {},
+  cropRestrictions = {}
 ) => {
   const scaledAllowedArea = {
     x: toPrecisedFloat(allowedArea.abstractX * allowedArea.scaledBy),
     y: toPrecisedFloat(allowedArea.abstractY * allowedArea.scaledBy),
     width: toPrecisedFloat(allowedArea.width * allowedArea.scaledBy),
-    height: toPrecisedFloat(allowedArea.height * allowedArea.scaledBy),
+    height: toPrecisedFloat(allowedArea.height * allowedArea.scaledBy)
   };
   const boundedDimensions = { ...newDimensions };
   if (newDimensions.x < scaledAllowedArea.x) {
@@ -79,7 +79,7 @@ export const boundResizing = (
     boundedDimensions.width = restrictNumber(
       boundedDimensions.width,
       cropRestrictions.minWidth,
-      cropRestrictions.maxWidth,
+      cropRestrictions.maxWidth
     );
     boundedDimensions.x = oldDimensions.x;
     boundedDimensions.y = oldDimensions.y;
@@ -97,7 +97,7 @@ export const boundResizing = (
     boundedDimensions.height = restrictNumber(
       boundedDimensions.height,
       cropRestrictions.minHeight,
-      cropRestrictions.maxHeight,
+      cropRestrictions.maxHeight
     );
 
     boundedDimensions.x = oldDimensions.x;

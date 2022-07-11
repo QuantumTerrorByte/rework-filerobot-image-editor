@@ -1,44 +1,44 @@
 /* eslint-disable import/no-named-as-default */
 // eslint-disable-next-line import/no-named-as-default-member
-import FilerobotImageEditor from '../packages/filerobot-image-editor/src';
-import config from './demo-config';
+import FilerobotImageEditor from "../packages/filerobot-image-editor/src";
+import config from "./demo-config";
 
 function getElementById(id) {
   return document.getElementById(id);
 }
 
-const crop = getElementById('crop');
-const finetune = getElementById('finetune');
-const filter = getElementById('filter');
-const filterLabel = getElementById('filter-label');
-const watermark = getElementById('watermark');
-const annotate = getElementById('annotate');
-const annotateLabel = getElementById('annotate-label');
-const resize = getElementById('resize');
-const addImg = getElementById('add-image');
-const modeOptions = getElementById('mode-options');
-const jsTabTitle = getElementById('js-code-tab');
-const jsCodeWrapper = getElementById('js-code-wrapper');
-const reactTabTitle = getElementById('react-code-tab');
-const reactCodeWrapper = getElementById('react-code-wrapper');
-const cdnTabTitle = getElementById('cdn-code-tab');
-const cdnCodeWrapper = getElementById('cdn-code-wrapper');
-const copyButtons = document.querySelectorAll('.copy-button');
-const accordions = document.querySelectorAll('[data-accordion]');
+const crop = getElementById("crop");
+const finetune = getElementById("finetune");
+const filter = getElementById("filter");
+const filterLabel = getElementById("filter-label");
+const watermark = getElementById("watermark");
+const annotate = getElementById("annotate");
+const annotateLabel = getElementById("annotate-label");
+const resize = getElementById("resize");
+const addImg = getElementById("add-image");
+const modeOptions = getElementById("mode-options");
+// const jsTabTitle = getElementById('js-code-tab');
+const jsCodeWrapper = getElementById("js-code-wrapper");
+const reactTabTitle = getElementById("react-code-tab");
+const reactCodeWrapper = getElementById("react-code-wrapper");
+const cdnTabTitle = getElementById("cdn-code-tab");
+const cdnCodeWrapper = getElementById("cdn-code-wrapper");
+const copyButtons = document.querySelectorAll(".copy-button");
+const accordions = document.querySelectorAll("[data-accordion]");
 
 let useCloudimage = false;
 const { TABS } = FilerobotImageEditor;
 
 const EXAMPLE_CODE_TABS = {
-  'js-code-tab': jsCodeWrapper,
-  'react-code-tab': reactCodeWrapper,
-  'cdn-code-tab': cdnCodeWrapper,
+  "js-code-tab": jsCodeWrapper,
+  "react-code-tab": reactCodeWrapper,
+  "cdn-code-tab": cdnCodeWrapper
 };
 
 const DEFAULT_IMAGES_SRCS = [
-  'https://scaleflex.cloudimg.io/v7/demo/river.png?w=100',
-  'https://scaleflex.cloudimg.io/v7/demo/spencer-davis-unsplash.jpg?w=100',
-  'https://scaleflex.cloudimg.io/v7/demo/damian-markutt-unsplash.jpg?w=100',
+  "https://scaleflex.cloudimg.io/v7/demo/river.png?w=100",
+  "https://scaleflex.cloudimg.io/v7/demo/spencer-davis-unsplash.jpg?w=100",
+  "https://scaleflex.cloudimg.io/v7/demo/damian-markutt-unsplash.jpg?w=100"
 ];
 
 const selectedTabs = [
@@ -47,7 +47,7 @@ const selectedTabs = [
   TABS.FILTERS,
   TABS.WATERMARK,
   TABS.ANNOTATE,
-  TABS.RESIZE,
+  TABS.RESIZE
 ];
 
 const IMG_EDITOR_TABS = {
@@ -56,36 +56,36 @@ const IMG_EDITOR_TABS = {
   filter: TABS.FILTERS,
   watermark: TABS.WATERMARK,
   annotate: TABS.ANNOTATE,
-  resize: TABS.RESIZE,
+  resize: TABS.RESIZE
 };
 
 const pluginConfig = {
   ...config,
-  source: 'https://scaleflex.cloudimg.io/v7/demo/river.png',
+  source: "https://scaleflex.cloudimg.io/v7/demo/river.png",
   tabsIds: selectedTabs,
-  defaultTabId: TABS.RESIZE,
+  defaultTabId: TABS.CROP,
   defaultToolId: null,
   observePluginContainerSize: true,
   cloudimage: {
-    token: 'demo',
-    version: 'v7',
-  },
+    token: "demo",
+    version: "v7"
+  }
 };
 
 function onSave(imageInfo) {
-  const url = imageInfo[useCloudimage ? 'cloudimageUrl' : 'imageBase64'];
+  const url = imageInfo[useCloudimage ? "cloudimageUrl" : "imageBase64"];
   const { fullName: fileName } = imageInfo;
-
-  let tmpLink = document.createElement('a');
+debugger
+  let tmpLink = document.createElement("a");
   tmpLink.href = url;
 
   if (useCloudimage) {
-    tmpLink.target = '_blank';
+    tmpLink.target = "_blank";
   } else {
     tmpLink.download = fileName;
   }
 
-  tmpLink.style = 'position: absolute; z-index: -111; visibility: none;';
+  tmpLink.style = "position: absolute; z-index: -111; visibility: none;";
   document.body.appendChild(tmpLink);
   tmpLink.click();
   document.body.removeChild(tmpLink);
@@ -102,13 +102,13 @@ function onSave(imageInfo) {
 }
 
 const filerobotImageEditor = new FilerobotImageEditor(
-  document.querySelector('#editor_container'),
-  pluginConfig,
+  document.querySelector("#editor_container"),
+  pluginConfig
 );
 
 filerobotImageEditor.render({
   onSave,
-  useCloudimage,
+  useCloudimage
 });
 
 function onChangeTabsHandler(event) {
@@ -117,7 +117,7 @@ function onChangeTabsHandler(event) {
   const nextTab = IMG_EDITOR_TABS[value];
 
   if (checked) {
-    if (!selectedTabs.includes(nextTab)) {
+    if ( !selectedTabs.includes(nextTab)) {
       selectedTabs.push(nextTab);
     }
   } else {
@@ -136,27 +136,27 @@ function onChangeTabsHandler(event) {
 
 function toggleActiveImage(imageContainer, imageSrc) {
   const removeResizeParamRegex = /\?.+/g;
-  const imageUrl = imageSrc.replace(removeResizeParamRegex, '');
+  const imageUrl = imageSrc.replace(removeResizeParamRegex, "");
   const prevImageContainer = document.querySelector(
-    '[data-image-editor-active-image]',
+    "[data-image-editor-active-image]"
   );
 
   if (prevImageContainer) {
-    prevImageContainer.removeAttribute('data-image-editor-active-image');
+    prevImageContainer.removeAttribute("data-image-editor-active-image");
   }
 
-  imageContainer.setAttribute('data-image-editor-active-image', '');
+  imageContainer.setAttribute("data-image-editor-active-image", "");
 
   filerobotImageEditor.render({ source: imageUrl });
 }
 
 function appendImageToContainer(imageSrc) {
-  const imagesWrapper = document.querySelector('.uploaded-imgs-wrapper');
-  const imageWrapper = document.createElement('div');
+  const imagesWrapper = document.querySelector(".uploaded-imgs-wrapper");
+  const imageWrapper = document.createElement("div");
 
   imageWrapper.style.backgroundImage = `url(${imageSrc})`;
 
-  imageWrapper.className = 'uploaded-img';
+  imageWrapper.className = "uploaded-img";
 
   imageWrapper.onclick = () => toggleActiveImage(imageWrapper, imageSrc);
 
@@ -177,16 +177,16 @@ function uploadImg(event) {
 }
 
 function changeModeHandler() {
-  if (modeOptions.value === 'Cloudimage') {
+  if (modeOptions.value === "Cloudimage") {
     annotate.checked = false;
     annotate.disabled = true;
-    annotateLabel.style.color = 'gray';
-    annotateLabel.style.cursor = 'auto';
+    annotateLabel.style.color = "gray";
+    annotateLabel.style.cursor = "auto";
 
     filter.checked = false;
     filter.disabled = true;
-    filterLabel.style.color = 'gray';
-    filterLabel.style.cursor = 'auto';
+    filterLabel.style.color = "gray";
+    filterLabel.style.cursor = "auto";
 
     useCloudimage = true;
   } else {
@@ -199,11 +199,11 @@ function changeModeHandler() {
     }
 
     filter.disabled = false;
-    filterLabel.style.color = '#203254';
-    filterLabel.style.cursor = 'pointer';
+    filterLabel.style.color = "#203254";
+    filterLabel.style.cursor = "pointer";
     annotate.disabled = false;
-    annotateLabel.style.color = '#203254';
-    annotateLabel.style.cursor = 'pointer';
+    annotateLabel.style.color = "#203254";
+    annotateLabel.style.cursor = "pointer";
 
     useCloudimage = false;
   }
@@ -217,10 +217,10 @@ function changeCodeTabHandler(event) {
 
   Object.values(EXAMPLE_CODE_TABS).forEach((codeTab) => {
     // eslint-disable-next-line no-param-reassign
-    codeTab.style.display = 'none';
+    codeTab.style.display = "none";
   });
 
-  selectedCode.style.display = 'unset';
+  selectedCode.style.display = "unset";
 }
 
 function toggleActiveCodeTab(event) {
@@ -228,62 +228,62 @@ function toggleActiveCodeTab(event) {
 
   changeCodeTabHandler(event);
 
-  const prevCodeTab = document.querySelector('[selected-tab]');
+  const prevCodeTab = document.querySelector("[selected-tab]");
 
   if (prevCodeTab) {
-    prevCodeTab.removeAttribute('selected-tab');
+    prevCodeTab.removeAttribute("selected-tab");
   }
 
-  nextCodeTab.setAttribute('selected-tab', '');
+  nextCodeTab.setAttribute("selected-tab", "");
 }
 
 document.onreadystatechange = () => {
   DEFAULT_IMAGES_SRCS.forEach((imageSrc, index) => {
     const imageContainer = appendImageToContainer(imageSrc);
 
-    if (!index) {
+    if ( !index) {
       toggleActiveImage(imageContainer, imageSrc);
     }
   });
 };
 
 function copyCodeHandler(event) {
-  const copyButton = event.currentTarget.getElementsByTagName('p')[0];
-  const currentCodeTabId = document.querySelector('[selected-tab]').id;
+  const copyButton = event.currentTarget.getElementsByTagName("p")[0];
+  const currentCodeTabId = document.querySelector("[selected-tab]").id;
   const currentCodeToCopy = EXAMPLE_CODE_TABS[currentCodeTabId];
 
   navigator.clipboard.writeText(currentCodeToCopy.innerText);
 
-  copyButton.innerHTML = 'Copied';
+  copyButton.innerHTML = "Copied";
 
   setTimeout(() => {
-    copyButton.innerHTML = 'Copy';
+    copyButton.innerHTML = "Copy";
   }, 500);
 }
 
 function showAccordionContent(event) {
-  const contentId = event.target.getAttribute('data-accordion');
+  const contentId = event.target.getAttribute("data-accordion");
   const content = document.querySelector(
-    `[data-accordion-content="${contentId}"]`,
+    `[data-accordion-content="${contentId}"]`
   );
 
-  content.style.display = !content?.offsetWidth ? 'block' : 'none';
+  content.style.display = !content?.offsetWidth ? "block" : "none";
 }
 
-crop.addEventListener('change', onChangeTabsHandler);
-finetune.addEventListener('change', onChangeTabsHandler);
-filter.addEventListener('change', onChangeTabsHandler);
-watermark.addEventListener('change', onChangeTabsHandler);
-annotate.addEventListener('change', onChangeTabsHandler);
-resize.addEventListener('change', onChangeTabsHandler);
-addImg.addEventListener('change', uploadImg);
-modeOptions.addEventListener('change', changeModeHandler);
-jsTabTitle.addEventListener('click', toggleActiveCodeTab);
-reactTabTitle.addEventListener('click', toggleActiveCodeTab);
-cdnTabTitle.addEventListener('click', toggleActiveCodeTab);
+crop.addEventListener("change", onChangeTabsHandler);
+finetune.addEventListener("change", onChangeTabsHandler);
+filter.addEventListener("change", onChangeTabsHandler);
+watermark.addEventListener("change", onChangeTabsHandler);
+annotate.addEventListener("change", onChangeTabsHandler);
+resize.addEventListener("change", onChangeTabsHandler);
+addImg.addEventListener("change", uploadImg);
+modeOptions.addEventListener("change", changeModeHandler);
+// jsTabTitle.addEventListener('click', toggleActiveCodeTab);
+reactTabTitle.addEventListener("click", toggleActiveCodeTab);
+cdnTabTitle.addEventListener("click", toggleActiveCodeTab);
 copyButtons.forEach((copyButton) => {
-  copyButton.addEventListener('click', copyCodeHandler);
+  copyButton.addEventListener("click", copyCodeHandler);
 });
 accordions.forEach((accordion) => {
-  accordion.addEventListener('click', showAccordionContent);
+  accordion.addEventListener("click", showAccordionContent);
 });

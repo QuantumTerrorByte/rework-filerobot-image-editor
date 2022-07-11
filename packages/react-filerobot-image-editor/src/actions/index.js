@@ -1,42 +1,47 @@
-import addFilter, { ADD_FILTER } from './addFilter';
-import hideLoader, { HIDE_LOADER } from './hideLoader';
-import redo, { REDO } from './redo';
-import reset, { RESET } from './reset';
-import setFeedback, { SET_FEEDBACK } from './setFeedback';
-import showLoader, { SHOW_LOADER } from './showLoader';
-import selectTab, { SELECT_TAB } from './selectTab';
-import undo, { UNDO } from './undo';
-import setFinetune, { SET_FINETUNE } from './setFinetune';
-import setAnnotation, { SET_ANNOTATION } from './setAnnotation';
-import changePointerIcon, { CHANGE_POINTER_ICON } from './changePointerIcon';
-import selectAnnotation, { SELECT_ANNOTATION } from './selectAnnotation';
+import addFilter, { ADD_FILTER } from "./addFilter";
+import hideLoader, { HIDE_LOADER } from "./hideLoader";
+import redo, { REDO } from "./redo";
+import reset, { RESET } from "./reset";
+import setFeedback, { SET_FEEDBACK } from "./setFeedback";
+import showLoader, { SHOW_LOADER } from "./showLoader";
+import selectTab, { SELECT_TAB } from "./selectTab";
+import undo, { UNDO } from "./undo";
+import setFinetune, { SET_FINETUNE } from "./setFinetune";
+import setAnnotation, { SET_ANNOTATION } from "./setAnnotation";
+import changePointerIcon, { CHANGE_POINTER_ICON } from "./changePointerIcon";
+import selectAnnotation, { SELECT_ANNOTATION } from "./selectAnnotation";
 import clearAnnotationsSelections, {
-  CLEAR_ANNOTATIONS_SELECTIONS,
-} from './clearAnnotationsSelections';
+  CLEAR_ANNOTATIONS_SELECTIONS
+} from "./clearAnnotationsSelections";
 import toggleOriginalImageDisplay, {
-  TOGGLE_ORIGINAL_IMAGE_DISPLAY,
-} from './toggleOriginalImageDisplay';
-import selectTool, { SELECT_TOOL } from './selectTool';
-import toggleFlip, { TOGGLE_FLIP } from './toggleFlip';
-import setCrop, { SET_CROP } from './setCrop';
-import changeRotation, { CHANGE_ROTATION } from './changeRotation';
-import zoomCanvas, { ZOOM_CANVAS } from './zoomCanvas';
-import setCanvasSize, { SET_CANVAS_SIZE } from './setCanvasSize';
-import setOriginalImage, { SET_ORIGINAL_IMAGE } from './setOriginalImage';
+  TOGGLE_ORIGINAL_IMAGE_DISPLAY
+} from "./toggleOriginalImageDisplay";
+import selectTool, { SELECT_TOOL } from "./selectTool";
+import toggleFlip, { TOGGLE_FLIP } from "./toggleFlip";
+import setCrop, { SET_CROP } from "./setCrop";
+import changeRotation, { CHANGE_ROTATION } from "./addedActions/changeRotation";
+import zoomCanvas, { ZOOM_CANVAS } from "./zoomCanvas";
+import setCanvasSize, { SET_CANVAS_SIZE } from "./setCanvasSize";
+import setOriginalImage, { SET_ORIGINAL_IMAGE } from "./setOriginalImage";
 import setShownImageDimensions, {
-  SET_SHOWN_IMAGE_DIMENSIONS,
-} from './setShownImageDimensions';
-import removeAnnotations, { REMOVE_ANNOTATIONS } from './removeAnnotations';
+  SET_SHOWN_IMAGE_DIMENSIONS
+} from "./setShownImageDimensions";
+import removeAnnotations, { REMOVE_ANNOTATIONS } from "./removeAnnotations";
 import duplicateAnnotations, {
-  DUPLICATE_ANNOTATIONS,
-} from './duplicateAnnotations';
+  DUPLICATE_ANNOTATIONS
+} from "./duplicateAnnotations";
 import enableTextContentEdit, {
-  ENABLE_TEXT_CONTENT_EDIT,
-} from './enableTextContentEdit';
-import setResize, { SET_RESIZE } from './setResize';
-import setSaved, { SET_SAVED } from './setSaved';
-import updateState, { UPDATE_STATE } from './updateState';
-import setLatestColor, { SET_LATEST_COLOR } from './setLatestColor';
+  ENABLE_TEXT_CONTENT_EDIT
+} from "./enableTextContentEdit";
+import setResize, { SET_RESIZE } from "./setResize";
+import setSaved, { SET_SAVED } from "./setSaved";
+import updateState, { UPDATE_STATE } from "./updateState";
+import setLatestColor, { SET_LATEST_COLOR } from "./setLatestColor";
+import replaceBackgroundAction, { MOVE_BACKGROUND } from "./addedActions/replaceBackgroundAction";
+import backgroundSize, { BACKGROUND_RESIZE } from "./addedActions/backgroundSize";
+import flipBackground, { FLIP_BACKGROUND } from "./addedActions/flipBackground";
+import setCropRatio, { SET_CROP_RATIO } from "./addedActions/setCropRatio";
+
 
 export default {
   [SET_ORIGINAL_IMAGE]: setOriginalImage,
@@ -70,6 +75,10 @@ export default {
   [RESET]: reset,
   [SET_SAVED]: setSaved,
   [UPDATE_STATE]: updateState,
+  [MOVE_BACKGROUND]: replaceBackgroundAction,
+  [BACKGROUND_RESIZE]: backgroundSize,
+  [FLIP_BACKGROUND]: flipBackground,
+  [SET_CROP_RATIO]: setCropRatio,
 };
 
 export {
@@ -104,4 +113,8 @@ export {
   RESET,
   SET_SAVED,
   UPDATE_STATE,
+  MOVE_BACKGROUND,
+  BACKGROUND_RESIZE,
+  FLIP_BACKGROUND,
+  SET_CROP_RATIO,
 };

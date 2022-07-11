@@ -25,19 +25,6 @@ export const TOOLS_ITEMS = {
     id: TOOLS_IDS.CROP,
     Item: Crop,
   },
-  [TOOLS_IDS.ROTATE]: {
-    id: TOOLS_IDS.ROTATE,
-    Item: RotateButton,
-    ItemOptions: RotateOptions,
-  },
-  [TOOLS_IDS.FLIP_X]: {
-    id: TOOLS_IDS.FLIP_X,
-    Item: FlipX,
-  },
-  [TOOLS_IDS.FLIP_Y]: {
-    id: TOOLS_IDS.FLIP_Y,
-    Item: FlipY,
-  },
   [TOOLS_IDS.BRIGHTNESS]: {
     id: TOOLS_IDS.BRIGHTNESS,
     Item: Brightness,
@@ -122,9 +109,6 @@ export const TOOLS_ITEMS = {
 export const TABS_TOOLS = {
   [TABS_IDS.ADJUST]: [
     TOOLS_IDS.CROP,
-    TOOLS_IDS.ROTATE,
-    TOOLS_IDS.FLIP_X,
-    TOOLS_IDS.FLIP_Y,
   ],
   [TABS_IDS.FINETUNE]: [
     TOOLS_IDS.BRIGHTNESS,

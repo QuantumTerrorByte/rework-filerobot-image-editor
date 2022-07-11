@@ -1,15 +1,15 @@
 /** External Dependencies */
-import React, { useMemo } from 'react';
-import { Transformer } from 'react-konva';
+import React, { useMemo } from "react";
+import { Transformer } from "react-konva";
 
 /** Internal Dependencies */
 import {
   NODES_TRANSFORMER_ID,
-  POINTER_ICONS,
-  TOOLS_IDS,
-} from 'utils/constants';
-import { useStore } from 'hooks';
-import { CHANGE_POINTER_ICON, ENABLE_TEXT_CONTENT_EDIT } from 'actions';
+  POINTER_ICONS, TABS_IDS,
+  TOOLS_IDS
+} from "utils/constants";
+import { useStore } from "hooks";
+import { CHANGE_POINTER_ICON, ENABLE_TEXT_CONTENT_EDIT } from "actions";
 
 const NodesTransformer = () => {
   const {
@@ -18,24 +18,29 @@ const NodesTransformer = () => {
     designLayer,
     dispatch,
     config: { useCloudimage },
+    tabId
   } = useStore();
+
+  if (tabId !== TABS_IDS.ANNOTATE && tabId !== TABS_IDS.WATERMARK) {
+    return null;
+  }
 
   const selections = useMemo(
     () =>
       designLayer?.findOne
         ? selectionsIds
-            .map((selectionId) => designLayer.findOne(`#${selectionId}`))
-            .filter(Boolean)
+          .map((selectionId) => designLayer.findOne(`#${selectionId}`))
+          .filter(Boolean)
         : [],
-    [selectionsIds],
+    [selectionsIds]
   );
 
   const changePointerIconToMove = () => {
     dispatch({
       type: CHANGE_POINTER_ICON,
       payload: {
-        pointerCssIcon: POINTER_ICONS.MOVE,
-      },
+        pointerCssIcon: POINTER_ICONS.MOVE
+      }
     });
   };
 
@@ -43,8 +48,8 @@ const NodesTransformer = () => {
     dispatch({
       type: CHANGE_POINTER_ICON,
       payload: {
-        pointerCssIcon: POINTER_ICONS.DRAW,
-      },
+        pointerCssIcon: POINTER_ICONS.DRAW
+      }
     });
   };
 
@@ -53,8 +58,8 @@ const NodesTransformer = () => {
       dispatch({
         type: ENABLE_TEXT_CONTENT_EDIT,
         payload: {
-          textIdOfEditableContent: selections[0].id(),
-        },
+          textIdOfEditableContent: selections[0].id()
+        }
       });
     }
   };
@@ -67,18 +72,18 @@ const NodesTransformer = () => {
       centeredScaling={false}
       rotationSnaps={[0, 45, 90, 135, 180, 225, 270, 315]}
       nodes={selections}
-      rotateAnchorOffset={30}
-      anchorSize={14}
+      rotateAnchorOffset={20}
+      anchorSize={10}
       anchorCornerRadius={7}
       padding={selections.length === 1 ? selections[0].attrs.padding ?? 1 : 1}
       ignoreStroke={false}
-      anchorStroke={theme.palette['accent-primary']}
-      anchorFill={theme.palette['access-primary']}
+      anchorStroke={theme.palette["accent-primary"]}
+      anchorFill={theme.palette["access-primary"]}
       anchorStrokeWidth={2}
-      borderStroke={theme.palette['accent-primary']}
+      borderStroke={theme.palette["accent-primary"]}
       borderStrokeWidth={2}
       borderDash={[4]}
-      rotateEnabled={!useCloudimage}
+      rotateEnabled={ !useCloudimage}
       onMouseOver={changePointerIconToMove}
       onMouseLeave={changePointerIconToDraw}
       onDblClick={enableTextContentChangeOnDblClick}

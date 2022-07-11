@@ -12,6 +12,7 @@ const RotateOptions = () => {
   const {
     dispatch,
     adjustments: { rotation = 0 },
+    backgroundRotation,
     resize = {},
   } = useStore();
 
@@ -45,7 +46,7 @@ const RotateOptions = () => {
       className="FIE_rotate-slider"
       min={-180}
       max={180}
-      value={rotation}
+      value={backgroundRotation}
       angle={60}
       onChange={changeRotation}
       style={{ marginBottom: 20 }}

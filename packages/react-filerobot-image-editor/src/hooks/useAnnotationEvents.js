@@ -1,31 +1,32 @@
 /** External Dependencies */
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from "react";
 
 /** Internal Dependencies */
-import { SET_ANNOTATION, SELECT_ANNOTATION, SELECT_TOOL } from 'actions';
-import { TOOLS_IDS, TABS_IDS, WATERMARK_ANNOTATION_ID } from 'utils/constants';
-import useStore from './useStore';
+import { SET_ANNOTATION, SELECT_ANNOTATION, SELECT_TOOL } from "actions";
+import { TOOLS_IDS, TABS_IDS, WATERMARK_ANNOTATION_ID } from "utils/constants";
+import useStore from "./useStore";
 
 const useAnnotationEvents = () => {
   const { tabId, dispatch } = useStore();
 
   const isAnnotationEventsDisabled = useMemo(
-    () => tabId !== TABS_IDS.ANNOTATE && tabId !== TABS_IDS.WATERMARK,
-    [tabId],
+    () => tabId !== TABS_IDS.ANNOTATE && tabId !== TABS_IDS.WATERMARK, //todo remove true
+    [tabId]
   );
 
   const updateAnnotation = useCallback((annotationProps) => {
-    dispatch({
-      type: SET_ANNOTATION,
-      payload: annotationProps,
-    });
+    // dispatch({
+    //   type: SET_ANNOTATION,
+    //   payload: annotationProps,
+    // });
   }, []);
 
   const updatePositionOnDragEnd = useCallback((e) => {
+
     updateAnnotation({
       id: e.target.id(),
       x: e.target.x(),
-      y: e.target.y(),
+      y: e.target.y()
     });
   }, []);
 
@@ -34,7 +35,7 @@ const useAnnotationEvents = () => {
       id: e.target.id(),
       rotation: e.target.rotation(),
       x: e.target.x(),
-      y: e.target.y(),
+      y: e.target.y()
     };
 
     if (e.target.name() === TOOLS_IDS.TEXT) {
@@ -69,8 +70,8 @@ const useAnnotationEvents = () => {
       type: SELECT_ANNOTATION,
       payload: {
         annotationId: e.target.id(),
-        multiple,
-      },
+        multiple
+      }
     });
     // TODO: Remove this once we implement the possibility to select annotation
     // while any annotation tool is opened without changing the tool.
@@ -78,23 +79,26 @@ const useAnnotationEvents = () => {
       type: SELECT_TOOL,
       payload: {
         toolId: e.target.name(),
-        keepSelections: multiple,
-      },
+        keepSelections: multiple
+      }
     });
   }, []);
 
   return useMemo(
     () =>
       isAnnotationEventsDisabled
-        ? {}
+        ? {
+          onClick: selectAnnotationOnClick,
+          onTap: selectAnnotationOnClick
+        }
         : {
-            onTransform: updateTextAnnotationOnTransform,
-            onTransformEnd: updateAnnotationTransform,
-            onDragEnd: updatePositionOnDragEnd,
-            onClick: selectAnnotationOnClick,
-            onTap: selectAnnotationOnClick,
-          },
-    [isAnnotationEventsDisabled],
+          onTransform: updateTextAnnotationOnTransform,
+          onTransformEnd: updateAnnotationTransform,
+          onDragEnd: updatePositionOnDragEnd,
+          onClick: selectAnnotationOnClick,
+          onTap: selectAnnotationOnClick
+        },
+    [isAnnotationEventsDisabled]
   );
 };
 

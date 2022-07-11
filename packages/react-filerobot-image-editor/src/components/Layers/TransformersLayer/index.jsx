@@ -1,18 +1,17 @@
 /** External Dependencies */
-import React from 'react';
-import { Layer } from 'react-konva';
+import React from "react";
+import { Layer } from "react-konva";
 
 /** Internal Dependencies */
-import { useStore } from 'hooks';
-import { TOOLS_IDS, TRANSFORMERS_LAYER_ID } from 'utils/constants';
-import CropTransformer from './CropTransformer';
-import NodesTransformer from './NodesTransformer';
+import { useStore } from "hooks";
+import { TOOLS_IDS, TRANSFORMERS_LAYER_ID } from "utils/constants";
+import CropTransformer from "./CropTransformer";
+import NodesTransformer from "./NodesTransformer";
 
 // NodesTransformer transformer for addons(annotations)
 // CropTransformer separate transformer for crop tab
 const TransformersLayer = () => {
-  const { toolId, shownImageDimensions } = useStore();
-
+  const { dispatch, toolId, shownImageDimensions } = useStore();
   return (
     <Layer
       id={TRANSFORMERS_LAYER_ID}

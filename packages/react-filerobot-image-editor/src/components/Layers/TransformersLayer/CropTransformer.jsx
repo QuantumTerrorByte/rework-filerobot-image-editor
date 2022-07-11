@@ -1,11 +1,11 @@
 /** External Dependencies */
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Ellipse, Image, Rect, Transformer } from "react-konva";
 import Konva from "konva";
 
 /** Internal Dependencies */
 import { useStore } from "hooks";
-import { SET_CROP, SET_FEEDBACK } from "actions";
+import { BACKGROUND_RESIZE, MOVE_BACKGROUND, SET_CROP, SET_FEEDBACK, SET_SHOWN_IMAGE_DIMENSIONS } from "actions";
 import {
   CUSTOM_CROP,
   ELLIPSE_CROP,
@@ -25,16 +25,27 @@ const CropTransformer = () => {
     adjustments: { crop = {}, isFlippedX, isFlippedY } = {},
     resize = {},
     config,
-    t
+    t,
+    backgroundX,
+    backgroundY,
+    initialCanvasWidth,
+    initialCanvasHeight,
+    backgroundWidthAddon,
+    backgroundHeightAddon,
+    cropRatio
   } = useStore();
+
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [startPoint, setStartPoint] = useState({});
+  const [backgroundStartPoint, setBackgroundStartPoint] = useState({});
 
   const cropShapeRef = useRef();
   const cropTransformerRef = useRef();
   const tmpImgNodeRef = useRef();
   const shownImageDimensionsRef = useRef();
+
   const cropConfig = config[TOOLS_IDS.CROP];
-  // const cropRatio = crop.ratio || cropConfig.ratio;
-  const cropRatio = 1.5;
+
   const isCustom = cropRatio === CUSTOM_CROP;
   const isEllipse = cropRatio === ELLIPSE_CROP;
 
@@ -43,17 +54,21 @@ const CropTransformer = () => {
       ? originalImage.width / originalImage.height
       : cropRatio;
 
-  //---------- initial crop state
+
+  //========================================== initial crop state
+
   useEffect(() => {
-    const cropWidth = shownImageDimensions.width / 2;
-    const cropHeight = shownImageDimensions.height / 2;
+    const cropHeight = shownImageDimensions.height * 0.75;
+    const cropWidth = cropHeight / cropRatio;
+
     const newCrop = {
       x: (shownImageDimensions.width - cropWidth) / 2,
       y: (shownImageDimensions.height - cropHeight) / 2,
       width: cropWidth,
       height: cropHeight
     };
-  debugger
+    // console.log(newCrop);
+    debugger
     dispatch({
       type: SET_CROP,
       payload: {
@@ -63,7 +78,8 @@ const CropTransformer = () => {
       }
     });
   }); // todo add dependencies
-  //----------
+
+  //==========================================
 
   const saveCrop = ({ width, height, x, y }, noHistory) => { //transformer
     const newCrop = {
@@ -128,6 +144,13 @@ const CropTransformer = () => {
     );
   };
 
+  const limitDragging = (e) => {
+    const currentCropShape = e.target;
+    currentCropShape.setAttrs(
+      boundDragging(currentCropShape.attrs, shownImageDimensionsRef.current)
+    );
+  };
+
   useEffect(() => {
     if (designLayer && cropTransformerRef.current && cropShapeRef.current) {
       if (tmpImgNodeRef.current) {
@@ -144,16 +167,6 @@ const CropTransformer = () => {
   }, [designLayer, originalImage, shownImageDimensions]);
 
   useEffect(() => {
-    if (shownImageDimensionsRef.current) {
-      const imageDimensions = shownImageDimensionsRef.current;
-      saveBoundedCropWithLatestConfig(
-        crop.width ?? imageDimensions.width,
-        crop.height ?? imageDimensions.height
-      );
-    }
-  }, [cropRatio]);
-
-  useEffect(() => {
     if (
       cropTransformerRef.current &&
       cropShapeRef.current &&
@@ -164,6 +177,16 @@ const CropTransformer = () => {
       saveBoundedCropWithLatestConfig(crop.width, crop.height);
     }
   }, [cropConfig, shownImageDimensions.width, shownImageDimensions.height]);
+
+  useEffect(() => {
+    if (shownImageDimensionsRef.current) {
+      const imageDimensions = shownImageDimensionsRef.current;
+      saveBoundedCropWithLatestConfig(
+        crop.width ?? imageDimensions.width,
+        crop.height ?? imageDimensions.height
+      );
+    }
+  }, [cropRatio]);
 
   useEffect(() => {
     if (shownImageDimensions) {
@@ -193,13 +216,6 @@ const CropTransformer = () => {
         y: e.target.y()
       },
       noHistory
-    );
-  };
-
-  const limitDragging = (e) => {
-    const currentCropShape = e.target;
-    currentCropShape.setAttrs(
-      boundDragging(currentCropShape.attrs, shownImageDimensionsRef.current)
     );
   };
 
@@ -239,21 +255,62 @@ const CropTransformer = () => {
     // draggable: true
   };
 
+
+  const selectBackground = (e) => {
+    const sp = { x: e.evt.x, y: e.evt.y };
+    setIsMouseDown(true);
+    setBackgroundStartPoint({ x: backgroundX, y: backgroundY });
+    setStartPoint(sp);
+  };
+  const unselectBackground = (e) => {
+    setIsMouseDown(false);
+  };
+  const moveBackground = (e) => {
+    if (isMouseDown) {
+      const changePosition = { x: e.evt.x - startPoint.x, y: e.evt.y - startPoint.y };
+      // console.log(changePosition);
+      dispatch({
+        type: MOVE_BACKGROUND,
+        payload: {
+          x: backgroundStartPoint.x + changePosition.x,
+          y: backgroundStartPoint.y + changePosition.y
+        }
+      });
+    }
+  };
+
+  const resizeBackground = (e) => {
+    console.log(e);
+    let direction = e.evt.deltaY > 0;
+    dispatch(
+      {
+        type: BACKGROUND_RESIZE,
+        payload: {
+          height: backgroundHeightAddon + (direction ? 10 : -10),
+          width: backgroundWidthAddon + (direction ? 10 : -10)
+        }
+      }
+    );
+  };
   // ALT is used to center scaling
   return (
     <>
-      <Image
-        image={originalImage}
+      <Rect
+        // image={originalImage}
         x={isFlippedX ? shownImageDimensions.width : 0}
         y={isFlippedY ? shownImageDimensions.height : 0}
         width={shownImageDimensions.width}
         height={shownImageDimensions.height}
-        filters={[Konva.Filters.Blur, Konva.Filters.Brighten]}
-        blurRadius={10}
-        brightness={-0.3}
-        scaleX={isFlippedX ? -1 : 1}
-        scaleY={isFlippedY ? -1 : 1}
+        fill="black"
+        opacity={0.5}
         ref={tmpImgNodeRef}
+
+
+        onMouseDown={selectBackground}
+        onMouseUp={unselectBackground}
+        //todo optimization with ref
+        onMouseMove={moveBackground}
+        onWheel={resizeBackground}
       />
       {isEllipse ? (
         <Ellipse
@@ -266,31 +323,36 @@ const CropTransformer = () => {
           }}
         />
       ) : (
-        <Rect {...cropShapeProps} width={width} height={height} />
+        <Rect {...cropShapeProps}
+              width={width}
+              height={height}
+              onMouseDown={selectBackground}
+              onMouseUp={unselectBackground}
+              onMouseMove={moveBackground}
+              onWheel={resizeBackground}
+        />
       )}
       <Transformer
         centeredScaling={false}
         flipEnabled={false}
         rotateEnabled={false}
         nodes={cropShapeRef.current ? [cropShapeRef.current] : []}
-        anchorSize={14}
+        anchorSize={0}
         anchorCornerRadius={7}
         enabledAnchors={enabledAnchors}
         ignoreStroke={false}
         anchorStroke={theme.palette["accent-primary"]}
         anchorFill={theme.palette["access-primary"]}
-        anchorStrokeWidth={2}
         borderStroke={theme.palette["accent-primary"]}
+        anchorStrokeWidth={2}
         borderStrokeWidth={2}
-        borderDash={[4]}
+        borderDash={[2]}
         keepRatio={ !isCustom || !isEllipse}
         ref={cropTransformerRef}
         boundBoxFunc={(absOldBox, absNewBox) => {
-          console.log(absOldBox);
-          console.log(absNewBox);
           return boundResizing(
             absOldBox,
-            absOldBox,
+            absNewBox,
             shownImageDimensionsRef.current,
             isCustom || isEllipse ? false : getProperCropRatio(),
             cropConfig
