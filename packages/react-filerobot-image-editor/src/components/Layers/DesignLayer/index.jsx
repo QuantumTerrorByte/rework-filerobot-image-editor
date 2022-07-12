@@ -263,15 +263,15 @@ const DesignLayer = () => {
       ref={designLayerRef}
       width={canvasWidth}
       height={canvasHeight}
-      scaleX={canvasScale}
-      // xPadding={xPoint}
-      // yPadding={yPoint}
+      // scaleX={canvasScale}
+      xPadding={xPoint}
+      yPadding={yPoint}
       // offsetX={scaledSpacedOriginalImg.width }
       // offsetY={scaledSpacedOriginalImg.height }
       // x={(scaledSpacedOriginalImg.width * resizedX) / 2 + xPoint}
       // y={(scaledSpacedOriginalImg.height * resizedY) / 2 + yPoint}
-      // scaleX={finalScaleX}
-      // scaleY={finalScaleY}
+      scaleX={finalScaleX}
+      scaleY={finalScaleY}
       clipFunc={clipFunc}
     >
       <Image

@@ -18,8 +18,8 @@ const TransformersLayer = () => {
       x={0}
       y={0}
       // scaleX={1.2}
-      width={canvasWidth*2}
-      height={canvasHeight*2}
+      width={canvasWidth}
+      height={canvasHeight}
     >
       <NodesTransformer />
       {toolId === TOOLS_IDS.CROP && <CropTransformer />}
