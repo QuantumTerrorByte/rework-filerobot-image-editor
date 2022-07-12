@@ -15,15 +15,16 @@ const MemoizedAnnotation = ({
   const AnnotationComponent = ANNOTATION_NAMES_TO_COMPONENT[annotation.name];
   const { tabId } = useStore();
 
-
   return (
     <AnnotationComponent
       key={annotation.id}
       annotationEvents={annotationEvents}
-      draggable={selectionsIds.includes(annotation.id)
+      draggable={
+        selectionsIds.includes(annotation.id)
         && tabId !== TABS_IDS.FILTERS
         && tabId !== TABS_IDS.FINETUNE
-        && tabId !== TABS_IDS.WATERMARK}
+        && tabId !== TABS_IDS.WATERMARK
+      }
       {...annotation}
     />
   );

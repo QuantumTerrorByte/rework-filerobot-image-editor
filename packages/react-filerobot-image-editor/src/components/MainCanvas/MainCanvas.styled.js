@@ -2,7 +2,7 @@
 import { Stage } from 'react-konva';
 import styled from 'styled-components';
 
-const CanvasContainer = styled.div`
+const StyledCanvasContainer = styled.div`
   width: 100%;
   position: relative;
   // backup for flex-grow, 94px, 12px = toolsbar's maxheight, app container padding.
@@ -24,9 +24,9 @@ const StyledOrignalImage = styled.img`
   z-index: 2;
 `;
 
-const StyledCanvasNode = styled(Stage)`
+const StyledCanvasStage = styled(Stage)`
   outline: none;
   background: ${({ theme }) => theme.palette['bg-secondary']};
 `;
 
-export { CanvasContainer, StyledOrignalImage, StyledCanvasNode };
+export { StyledCanvasContainer, StyledOrignalImage, StyledCanvasStage };

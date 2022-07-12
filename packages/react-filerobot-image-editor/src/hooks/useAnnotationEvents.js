@@ -10,19 +10,18 @@ const useAnnotationEvents = () => {
   const { tabId, dispatch } = useStore();
 
   const isAnnotationEventsDisabled = useMemo(
-    () => tabId !== TABS_IDS.ANNOTATE && tabId !== TABS_IDS.WATERMARK, //todo remove true
+    () => tabId !== TABS_IDS.ANNOTATE && tabId !== TABS_IDS.WATERMARK,
     [tabId]
   );
 
   const updateAnnotation = useCallback((annotationProps) => {
-    // dispatch({
-    //   type: SET_ANNOTATION,
-    //   payload: annotationProps,
-    // });
+    dispatch({
+      type: SET_ANNOTATION,
+      payload: annotationProps,
+    });
   }, []);
 
   const updatePositionOnDragEnd = useCallback((e) => {
-
     updateAnnotation({
       id: e.target.id(),
       x: e.target.x(),

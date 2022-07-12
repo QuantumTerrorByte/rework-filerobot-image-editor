@@ -59,12 +59,13 @@ const DesignLayer = () => {
     };
   }, [originalImage]);
 
-  const originalImgSizeAfterRotation = useMemo(
-    () =>
-      getSizeAfterRotation(originalImage.width, originalImage.height, rotation),
-    [originalImage, rotation]
-  );
+  // const originalImgSizeAfterRotation = useMemo(
+  //   () =>
+  //     getSizeAfterRotation(originalImage.width, originalImage.height, rotation),
+  //   [originalImage, rotation]
+  // );
 
+  // height/width
   const originalImgInitialScale = useMemo(
     () =>
       getDimensionsMinimalRatio(
@@ -136,16 +137,19 @@ const DesignLayer = () => {
     // We are using isSaving to apply ellitpical crop if we're saving the image
     // while in crop tool and it's elliptical crop ratio,
     // As elliptical crop isn't applied while in crop tool.
+    debugger
     const isCroppingAndNotSaving =
       isCurrentlyCropping && !designLayerRef.current?.attrs?.isSaving;
     const clipBox = isCroppingAndNotSaving
       ? {
         ...imageDimensions,
+        width: canvasWidth,
+        height: canvasHeight,
         x: 0,
         y: 0
       }
       : {
-        width: crop.width || imageDimensions.width,
+        width: crop.width ||imageDimensions.width,
         height: crop.height || imageDimensions.height,
         x: crop.x || 0,
         y: crop.y || 0
@@ -156,7 +160,7 @@ const DesignLayer = () => {
         clipX: clipBox.x,
         clipY: clipBox.y,
         clipWidth: clipBox.width,
-        clipHeight: clipBox.height
+        clipHeight: clipBox.height,
       });
     }
   };
@@ -257,14 +261,17 @@ const DesignLayer = () => {
     <Layer
       id={DESIGN_LAYER_ID}
       ref={designLayerRef}
-      xPadding={xPoint}
-      yPadding={yPoint}
-      offsetX={scaledSpacedOriginalImg.width / 2}
-      offsetY={scaledSpacedOriginalImg.height / 2}
-      x={(scaledSpacedOriginalImg.width * resizedX) / 2 + xPoint}
-      y={(scaledSpacedOriginalImg.height * resizedY) / 2 + yPoint}
-      scaleX={finalScaleX}
-      scaleY={finalScaleY}
+      width={canvasWidth}
+      height={canvasHeight}
+      scaleX={canvasScale}
+      // xPadding={xPoint}
+      // yPadding={yPoint}
+      // offsetX={scaledSpacedOriginalImg.width }
+      // offsetY={scaledSpacedOriginalImg.height }
+      // x={(scaledSpacedOriginalImg.width * resizedX) / 2 + xPoint}
+      // y={(scaledSpacedOriginalImg.height * resizedY) / 2 + yPoint}
+      // scaleX={finalScaleX}
+      // scaleY={finalScaleY}
       clipFunc={clipFunc}
     >
       <Image

@@ -11,12 +11,15 @@ import NodesTransformer from "./NodesTransformer";
 // NodesTransformer transformer for addons(annotations)
 // CropTransformer separate transformer for crop tab
 const TransformersLayer = () => {
-  const { dispatch, toolId, shownImageDimensions } = useStore();
+  const { dispatch, toolId, shownImageDimensions, canvasWidth, canvasHeight } = useStore();
   return (
     <Layer
       id={TRANSFORMERS_LAYER_ID}
-      x={shownImageDimensions.abstractX || 0}
-      y={shownImageDimensions.abstractY || 0}
+      x={0}
+      y={0}
+      // scaleX={1.2}
+      width={canvasWidth*2}
+      height={canvasHeight*2}
     >
       <NodesTransformer />
       {toolId === TOOLS_IDS.CROP && <CropTransformer />}

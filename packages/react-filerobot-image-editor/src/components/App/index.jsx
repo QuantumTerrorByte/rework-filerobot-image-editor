@@ -1,39 +1,39 @@
 /** External Dependencies */
-import React, { memo, useCallback, useEffect, useState, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useState, useRef } from "react";
 
 /** Internal Dependencies */
-import MainCanvas from 'components/MainCanvas';
-import { ROOT_CONTAINER_CLASS_NAME } from 'utils/constants';
-import Topbar from 'components/Topbar';
-import Tabs from 'components/Tabs';
-import ToolsBar from 'components/ToolsBar';
+import MainCanvas from "components/MainCanvas";
+import { ROOT_CONTAINER_CLASS_NAME } from "utils/constants";
+import Topbar from "components/Topbar";
+import Tabs from "components/Tabs";
+import ToolsBar from "components/ToolsBar";
 import {
   HIDE_LOADER,
   SET_FEEDBACK,
   SET_ORIGINAL_IMAGE,
   SHOW_LOADER,
-  UPDATE_STATE,
-} from 'actions';
-import FeedbackPopup from 'components/FeedbackPopup';
-import loadImage from 'utils/loadImage';
+  UPDATE_STATE
+} from "actions";
+import FeedbackPopup from "components/FeedbackPopup";
+import loadImage from "utils/loadImage";
 import {
   usePhoneScreen,
   useResizeObserver,
   useStore,
-  useTransformedImgData,
-} from 'hooks';
-import Spinner from 'components/common/Spinner';
-import { getBackendTranslations } from 'utils/translator';
-import cloudimageQueryToDesignState from 'utils/cloudimageQueryToDesignState';
-import finetunesStrsToClasses from 'utils/finetunesStrsToClasses';
-import filterStrToClass from 'utils/filterStrToClass';
-import isSameImage from 'utils/isSameImage';
+  useTransformedImgData
+} from "hooks";
+import Spinner from "components/common/Spinner";
+import { getBackendTranslations } from "utils/translator";
+import cloudimageQueryToDesignState from "utils/cloudimageQueryToDesignState";
+import finetunesStrsToClasses from "utils/finetunesStrsToClasses";
+import filterStrToClass from "utils/filterStrToClass";
+import isSameImage from "utils/isSameImage";
 import {
   StyledAppWrapper,
   StyledMainContent,
   StyledCanvasAndTools,
-  StyledPhoneToolsAndTabs,
-} from './App.styled';
+  StyledPhoneToolsAndTabs
+} from "./App.styled";
 
 const App = () => {
   const {
@@ -44,7 +44,7 @@ const App = () => {
     originalImage,
     shownImageDimensions,
     t,
-    feedback = {},
+    feedback = {}
   } = useStore();
   const {
     loadableDesignState,
@@ -59,13 +59,13 @@ const App = () => {
     observePluginContainerSize,
     showCanvasOnly,
     getCurrentImgDataFnRef,
-    updateStateFnRef,
+    updateStateFnRef
   } = config;
 
   const [observeResize, unobserveElement] = useResizeObserver();
   const [rootSize, setRootSize] = useState({
     width: undefined,
-    height: undefined,
+    height: undefined
   });
   const isPhoneScreen = usePhoneScreen();
   const pluginRootRef = useRef(null);
@@ -81,8 +81,8 @@ const App = () => {
     dispatch({
       type: SET_ORIGINAL_IMAGE,
       payload: {
-        originalImage: newOriginalImage,
-      },
+        originalImage: newOriginalImage
+      }
     });
   }, []);
 
@@ -92,9 +92,9 @@ const App = () => {
       payload: {
         feedback: {
           message: newError.message || newError,
-          duration: 0,
-        },
-      },
+          duration: 0
+        }
+      }
     });
   }, []);
 
@@ -103,11 +103,11 @@ const App = () => {
     new Promise((resolve) => {
       const imgSrc = imgToLoad?.src || imgToLoad;
       if (
-        imageBeingLoadedSrc.current === imgSrc ||
-        (!imgSrc && originalImage) ||
-        isSameImage(imgSrc, originalImage)
+        imageBeingLoadedSrc.current === imgSrc
+        || ( !imgSrc && originalImage)
+        || isSameImage(imgSrc, originalImage)
       ) {
-        if (!imageBeingLoadedSrc.current) {
+        if ( !imageBeingLoadedSrc.current) {
           resolve();
         }
         return;
@@ -120,7 +120,7 @@ const App = () => {
 
       imageBeingLoadedSrc.current = imgSrc;
 
-      if (typeof imgToLoad === 'string') {
+      if (typeof imgToLoad === "string") {
         loadImage(imgToLoad, defaultSavedImageName)
           .then(setNewOriginalImage)
           .catch(setError)
@@ -129,7 +129,7 @@ const App = () => {
         setNewOriginalImage(imgToLoad);
         triggerResolve();
       } else {
-        setError(t('invalidImageError'));
+        setError(t("invalidImageError"));
         triggerResolve();
       }
     });
@@ -137,7 +137,7 @@ const App = () => {
   const promptDialogIfHasChangeNotSaved = (e) => {
     if (haveNotSavedChangesRef.current) {
       e.preventDefault();
-      e.returnValue = '';
+      e.returnValue = "";
     }
   };
 
@@ -157,8 +157,8 @@ const App = () => {
         payload: {
           ...loadableDesignState,
           finetunes: finetunesStrsToClasses(loadableDesignState?.finetunes),
-          filter: filterStrToClass(loadableDesignState?.filter),
-        },
+          filter: filterStrToClass(loadableDesignState?.filter)
+        }
       });
     }
   };
@@ -175,48 +175,48 @@ const App = () => {
   }, [source]);
 
   useEffect(() => {
-    if (!isFirstRender.current) {
+    if ( !isFirstRender.current) {
       const newImgSrc = loadableDesignState?.imgSrc;
       if (newImgSrc && !isSameImage(newImgSrc, originalImage)) {
         handleLoading(() => [
           loadAndSetOriginalImage(newImgSrc).then(
-            updateDesignStateWithLoadableOne,
-          ),
+            updateDesignStateWithLoadableOne
+          )
         ]);
       } else {
         updateDesignStateWithLoadableOne();
       }
     }
   }, [loadableDesignState]);
-
+  // IF CLOUD
   useEffect(() => {
     if (
       Object.keys(shownImageDimensions || {}).length > 0 &&
       !Object.keys(shownImageDimensions).some(
-        (k) => !shownImageDimensions[k],
+        (k) => !shownImageDimensions[k]
       ) &&
       originalImage &&
       useCloudimage &&
       cloudimage?.loadableQuery &&
       !cloudimageQueryLoaded.current
     ) {
-      dispatch({
-        type: UPDATE_STATE,
-        payload: cloudimageQueryToDesignState(
-          cloudimage.loadableQuery,
-          shownImageDimensions,
-          originalImage,
-        ),
-      });
-      cloudimageQueryLoaded.current = true;
+      // dispatch({
+      //   type: UPDATE_STATE,
+      //   payload: cloudimageQueryToDesignState(
+      //     cloudimage.loadableQuery,
+      //     shownImageDimensions,
+      //     originalImage
+      //   )
+      // });
+      // cloudimageQueryLoaded.current = true;
     }
   }, [shownImageDimensions, originalImage, useCloudimage, cloudimage]);
-
+  //OBSERVE RESIZE TODO
   useEffect(() => {
     let isUnmounted = false;
     if (observePluginContainerSize && pluginRootRef.current) {
       observeResize(pluginRootRef.current.parentNode, ({ width, height }) =>
-        setRootSize({ width, height }),
+        setRootSize({ width, height })
       );
     } else if (rootSize.width && rootSize.height && !isUnmounted) {
       setRootSize({ width: undefined, height: undefined });
@@ -236,43 +236,43 @@ const App = () => {
       loadAndSetOriginalImage(loadableDesignState?.imgSrc || source),
       ...(useBackendTranslations
         ? [getBackendTranslations(language, translations)]
-        : []),
+        : [])
     ];
 
     handleLoading(initialRequestsPromisesFn);
     isFirstRender.current = false;
 
     if (window && !avoidChangesNotSavedAlertOnLeave) {
-      window.addEventListener('beforeunload', promptDialogIfHasChangeNotSaved);
+      window.addEventListener("beforeunload", promptDialogIfHasChangeNotSaved);
     }
 
     return () => {
       if (window && !avoidChangesNotSavedAlertOnLeave) {
         window.removeEventListener(
-          'beforeunload',
-          promptDialogIfHasChangeNotSaved,
+          "beforeunload",
+          promptDialogIfHasChangeNotSaved
         );
       }
     };
   }, []);
-
+  //initial update state func ref
   useEffect(() => {
-    if (updateStateFnRef && typeof updateStateFnRef === 'object') {
+    if (updateStateFnRef && typeof updateStateFnRef === "object") {
       updateStateFnRef.current = (newStatePartObjOrFn) => {
         dispatch({
           type: UPDATE_STATE,
-          payload: newStatePartObjOrFn,
+          payload: newStatePartObjOrFn
         });
       };
     }
   }, [updateStateFnRef, dispatch]);
-
+  //initial state func ref
   useEffect(() => {
-    if (getCurrentImgDataFnRef && typeof getCurrentImgDataFnRef === 'object') {
+    if (getCurrentImgDataFnRef && typeof getCurrentImgDataFnRef === "object") {
       getCurrentImgDataFnRef.current = transformImgFn;
     }
   }, [transformImgFn]);
-
+  //not saved changes popUp
   useEffect(() => {
     haveNotSavedChangesRef.current = haveNotSavedChanges;
   }, [haveNotSavedChanges]);
@@ -284,14 +284,14 @@ const App = () => {
       ref={pluginRootRef}
       $size={rootSize}
     >
-      {isLoadingGlobally && <Spinner label={t('loading')} />}
-      {!showCanvasOnly && <Topbar />}
+      {isLoadingGlobally && <Spinner label={t("loading")} />}
+      { !showCanvasOnly && <Topbar />}
       {originalImage && feedback.duration !== 0 && (
         <StyledMainContent className="FIE_main-container">
-          {!isPhoneScreen && !showCanvasOnly && <Tabs />}
+          { !isPhoneScreen && !showCanvasOnly && <Tabs />}
           <StyledCanvasAndTools className="FIE_editor-content">
             <MainCanvas />
-            {!showCanvasOnly &&
+            { !showCanvasOnly &&
               (isPhoneScreen ? (
                 <StyledPhoneToolsAndTabs className="FIE_phone-tools-tabs-wrapper">
                   <ToolsBar />

@@ -32,7 +32,7 @@ class FilerobotImageEditor {
 
   render(additionalConfig) {
     if (typeof additionalConfig === 'object') {
-      this.config = this.config = deepMerge(
+      this.config = this.config = deepMerge( //TODO WTF
         this.config || {},
         additionalConfig,
       );

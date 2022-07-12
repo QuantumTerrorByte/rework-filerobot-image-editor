@@ -30,6 +30,9 @@ const CropTransformer = () => {
     backgroundY,
     initialCanvasWidth,
     initialCanvasHeight,
+    canvasHeight,
+    canvasScale,
+    canvasWidth,
     backgroundWidthAddon,
     backgroundHeightAddon,
     cropRatio
@@ -54,20 +57,19 @@ const CropTransformer = () => {
       ? originalImage.width / originalImage.height
       : cropRatio;
 
-
   //========================================== initial crop state
 
   useEffect(() => {
-    const cropHeight = shownImageDimensions.height * 0.75;
+    const cropHeight = canvasHeight * 0.75;
     const cropWidth = cropHeight / cropRatio;
 
     const newCrop = {
-      x: (shownImageDimensions.width - cropWidth) / 2,
-      y: (shownImageDimensions.height - cropHeight) / 2,
+      x: (canvasWidth - cropWidth) / 2,
+      y: (canvasHeight - cropHeight) / 2,
       width: cropWidth,
       height: cropHeight
     };
-    // console.log(newCrop);
+
     debugger
     dispatch({
       type: SET_CROP,
@@ -151,20 +153,20 @@ const CropTransformer = () => {
     );
   };
 
-  useEffect(() => {
-    if (designLayer && cropTransformerRef.current && cropShapeRef.current) {
-      if (tmpImgNodeRef.current) {
-        tmpImgNodeRef.current.cache();
-      }
-      cropTransformerRef.current.nodes([cropShapeRef.current]);
-    }
-
-    return () => {
-      if (tmpImgNodeRef.current) {
-        tmpImgNodeRef.current.clearCache();
-      }
-    };
-  }, [designLayer, originalImage, shownImageDimensions]);
+  // useEffect(() => {
+  //   if (designLayer && cropTransformerRef.current && cropShapeRef.current) {
+  //     if (tmpImgNodeRef.current) {
+  //       tmpImgNodeRef.current.cache();
+  //     }
+  //     cropTransformerRef.current.nodes([cropShapeRef.current]);
+  //   }
+  //
+  //   return () => {
+  //     if (tmpImgNodeRef.current) {
+  //       tmpImgNodeRef.current.clearCache();
+  //     }
+  //   };
+  // }, [designLayer, originalImage, shownImageDimensions]);
 
   useEffect(() => {
     if (
@@ -198,12 +200,11 @@ const CropTransformer = () => {
     return null;
   }
 
-  const enabledAnchors =
-    isCustom || isEllipse
-      ? undefined
-      : ["top-left", "bottom-left", "top-right", "bottom-right"];
+  const enabledAnchors = isCustom || isEllipse
+    ? undefined
+    : ["top-left", "bottom-left", "top-right", "bottom-right"];
 
-  const saveCropFromEvent = (e, noHistory = false) => { //apply crop from transform end
+  /*const saveCropFromEvent = (e, noHistory = false) => { //apply crop from transform end
     if ( !e.target) {
       return;
     }
@@ -217,7 +218,7 @@ const CropTransformer = () => {
       },
       noHistory
     );
-  };
+  };*/
 
   let attrs;
   if ( !crop.width && !crop.height) {
@@ -249,10 +250,6 @@ const CropTransformer = () => {
     scaleX: 1,
     scaleY: 1,
     globalCompositeOperation: "destination-out"
-    // onDragEnd: saveCropFromEvent,
-    // onDragMove: limitDragging,
-    // onTransformEnd: saveCropFromEvent,
-    // draggable: true
   };
 
 
@@ -268,7 +265,7 @@ const CropTransformer = () => {
   const moveBackground = (e) => {
     if (isMouseDown) {
       const changePosition = { x: e.evt.x - startPoint.x, y: e.evt.y - startPoint.y };
-      // console.log(changePosition);
+      console.log(changePosition);
       dispatch({
         type: MOVE_BACKGROUND,
         payload: {
@@ -278,7 +275,6 @@ const CropTransformer = () => {
       });
     }
   };
-
   const resizeBackground = (e) => {
     console.log(e);
     let direction = e.evt.deltaY > 0;
@@ -293,18 +289,19 @@ const CropTransformer = () => {
     );
   };
   // ALT is used to center scaling
+  console.log(canvasWidth + " " + canvasHeight + " " + canvasScale);
   return (
     <>
       <Rect
         // image={originalImage}
-        x={isFlippedX ? shownImageDimensions.width : 0}
-        y={isFlippedY ? shownImageDimensions.height : 0}
-        width={shownImageDimensions.width}
-        height={shownImageDimensions.height}
+        x={0}
+        y={0}
+        // scaleX={canvasScale}
+        width={canvasWidth}
+        height={canvasHeight}
         fill="black"
         opacity={0.5}
         ref={tmpImgNodeRef}
-
 
         onMouseDown={selectBackground}
         onMouseUp={unselectBackground}

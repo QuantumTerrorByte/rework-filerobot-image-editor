@@ -25,7 +25,7 @@ import {
 } from 'utils/constants';
 import { useStore } from 'hooks';
 import { endTouchesZooming, zoomOnTouchesMove } from './touchZoomingEvents';
-import { StyledCanvasNode } from './MainCanvas.styled';
+import { StyledCanvasStage } from './MainCanvas.styled';
 
 const ZOOM_DELTA_TO_SCALE_CONVERT_FACTOR = 0.001;
 
@@ -210,8 +210,8 @@ const CanvasNode = ({ children }) => {
   // it's done by toggling panning through mouse right click (enable/disable) then drag mouse.
   const zoomedResponsiveCanvasScale =
     canvasScale * ((isZoomEnabled && zoom.factor) || defaultZoomFactor);
-  return (
-    <StyledCanvasNode
+  return ( //Stage
+    <StyledCanvasStage
       className="FIE_canvas-node"
       tabIndex={-1}
       ref={canvasRef}
@@ -236,7 +236,7 @@ const CanvasNode = ({ children }) => {
       style={cursorStyle}
     >
       {children}
-    </StyledCanvasNode>
+    </StyledCanvasStage>
   );
 };
 

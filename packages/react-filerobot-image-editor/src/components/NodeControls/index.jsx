@@ -12,15 +12,16 @@ import { NODES_TRANSFORMER_ID, WATERMARK_ANNOTATION_ID } from 'utils/constants';
 import debounce from 'utils/debounce';
 import { StyledNodeControls } from './NodeControls.styled';
 
+//delete/duplicate node buttons
 const NodeControls = () => {
   const { selectionsIds = [], designLayer, annotations, dispatch } = useStore();
   const [position, setPosition] = useState({ left: 0, top: 0 });
   const nodesTransformer = useMemo(
-    () => designLayer?.getStage()?.findOne(`#${NODES_TRANSFORMER_ID}`),
+    () => designLayer?.getStage()?.findOne(`#${NODES_TRANSFORMER_ID}`), //get transformer
     [designLayer],
   );
   const selectionsLength = selectionsIds.length;
-
+  //??? TODO
   const updatePosition = debounce(() => {
     if (!nodesTransformer) {
       return;

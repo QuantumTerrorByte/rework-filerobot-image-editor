@@ -8,7 +8,7 @@ import { SET_CANVAS_SIZE } from "actions";
 import { useResizeObserver, useStore } from "hooks";
 import NodeControls from "components/NodeControls";
 import CanvasNode from "./CanvasNode";
-import { CanvasContainer, StyledOrignalImage } from "./MainCanvas.styled";
+import { StyledCanvasContainer, StyledOrignalImage } from "./MainCanvas.styled";
 
 
 const MainCanvas = () => {
@@ -43,7 +43,7 @@ const MainCanvas = () => {
   }, []);
 
   return (
-    <CanvasContainer
+    <StyledCanvasContainer
       className="FIE_canvas-container"
       ref={observeCanvasContainerResizing}
     >
@@ -60,7 +60,7 @@ const MainCanvas = () => {
           <TransformersLayer />
         </AppProviderOverridenValue>
       </CanvasNode>
-    </CanvasContainer>
+    </StyledCanvasContainer>
   );
 };
 
