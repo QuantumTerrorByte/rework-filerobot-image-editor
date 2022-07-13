@@ -69,13 +69,82 @@ const pluginConfig = {
   cloudimage: {
     token: "demo",
     version: "v7"
+  },
+  loadableDesignState: {
+    annotations: {
+      "Ellipse-1350843087957": {
+        fill: "#000000",
+        id: "Ellipse-1350843087957",
+        name: "Ellipse",
+        opacity: 1,
+        radiusX: 42.67894448892216,
+        radiusY: 42.67894448892216,
+        rotation: -0,
+        scaleX: 0.9999999999999989,
+        scaleY: 1.0000000000000004,
+        shadowBlur: 0,
+        shadowColor: "#000000",
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        shadowOpacity: 1,
+        stroke: "#000000",
+        strokeWidth: 0,
+        x: 168.70163035378658,
+        y: 60.84678669806624
+      },
+      "Rect-1238543392829": {
+        cornerRadius: 0,
+        fill: "#000000",
+        height: 188.72816891095107,
+        id: "Rect-1238543392829",
+        name: "Rect",
+        opacity: 1,
+        rotation: 45,
+        scaleX: 0.9999999999999998,
+        scaleY: 0.9999999999999999,
+        shadowBlur: 0,
+        shadowColor: "#000000",
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        shadowOpacity: 1,
+        stroke: "#000000",
+        strokeWidth: 0,
+        width: 208.4065625622316,
+        x: 281.60384245300827,
+        y: 130.51972907859988
+      },
+      "Text-138291345185": {
+        align: "left",
+        fill: "#000000",
+        fontFamily: "Comic-sans",
+        fontSize: 24,
+        fontStyle: "bold italic",
+        height: 48.944809095072856,
+        id: "Text-138291345185",
+        letterSpacing: 0,
+        lineHeight: 1,
+        name: "Text",
+        opacity: 1,
+        shadowBlur: 0,
+        shadowColor: "#000000",
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        shadowOpacity: 1,
+        stroke: "#000000",
+        strokeWidth: 1,
+        text: "Filerobot...",
+        width: 115.91587891981402,
+        x: 271.3187268304967,
+        y: 87.90088164013082
+      }
+    }
   }
 };
 
 function onSave(imageInfo) {
   const url = imageInfo[useCloudimage ? "cloudimageUrl" : "imageBase64"];
   const { fullName: fileName } = imageInfo;
-debugger
+  debugger
   let tmpLink = document.createElement("a");
   tmpLink.href = url;
 

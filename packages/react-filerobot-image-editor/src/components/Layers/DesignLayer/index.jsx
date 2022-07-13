@@ -6,7 +6,7 @@ import { Image, Layer, Transformer } from "react-konva";
 import getDimensionsMinimalRatio from "utils/getDimensionsMinimalRatio";
 import cropImage from "utils/cropImage";
 import { DESIGN_LAYER_ID, IMAGE_NODE_ID, TOOLS_IDS } from "utils/constants";
-import { SET_SHOWN_IMAGE_DIMENSIONS } from "actions";
+import { SET_BACKGROUND_IMG, SET_SHOWN_IMAGE_DIMENSIONS } from "actions";
 import getProperImageToCanvasSpacing from "utils/getProperImageToCanvasSpacing";
 import { useStore } from "hooks";
 import getSizeAfterRotation from "utils/getSizeAfterRotation";
@@ -41,7 +41,7 @@ const DesignLayer = () => {
   } = useStore();
   const imageNodeRef = useRef();
   const previewGroupRef = useRef();
-
+  debugger
   const isCurrentlyCropping = toolId === TOOLS_IDS.CROP;
 
   const finetunesAndFilter = useMemo(
@@ -137,7 +137,7 @@ const DesignLayer = () => {
     // We are using isSaving to apply ellitpical crop if we're saving the image
     // while in crop tool and it's elliptical crop ratio,
     // As elliptical crop isn't applied while in crop tool.
-    debugger
+
     const isCroppingAndNotSaving =
       isCurrentlyCropping && !designLayerRef.current?.attrs?.isSaving;
     const clipBox = isCroppingAndNotSaving
@@ -149,7 +149,7 @@ const DesignLayer = () => {
         y: 0
       }
       : {
-        width: crop.width ||imageDimensions.width,
+        width: crop.width || imageDimensions.width,
         height: crop.height || imageDimensions.height,
         x: crop.x || 0,
         y: crop.y || 0
@@ -160,7 +160,7 @@ const DesignLayer = () => {
         clipX: clipBox.x,
         clipY: clipBox.y,
         clipWidth: clipBox.width,
-        clipHeight: clipBox.height,
+        clipHeight: clipBox.height
       });
     }
   };
@@ -186,6 +186,15 @@ const DesignLayer = () => {
       sizeAfterRotation.height
     )
     : 1;
+
+  useEffect(() => {
+    if (imageNodeRef.current) {
+      dispatch({
+        type: SET_BACKGROUND_IMG,
+        payload: imageNodeRef
+      });
+    }
+  }, [imageNodeRef.current]);
 
   useEffect(() => {
     if (originalImage) {
@@ -257,13 +266,21 @@ const DesignLayer = () => {
     (isCurrentlyCropping ? 1 : resizedY) *
     scaleAfterRotation;
 
+
+  const widthWithAddons = scaledSpacedOriginalImg.width + backgroundWidthAddon;
+  const heightWithAddons = scaledSpacedOriginalImg.height + backgroundHeightAddon;
+  const finalBackgroundHeight = heightWithAddons;
+  const finalBackgroundWidth = widthWithAddons;
+  const finalBackgroundOffsetX = widthWithAddons / 2;
+  const finalBackgroundOffsetY = heightWithAddons / 2;
+
+  console.log("RENDER");
   return (
     <Layer
       id={DESIGN_LAYER_ID}
       ref={designLayerRef}
       width={canvasWidth}
       height={canvasHeight}
-      // scaleX={canvasScale}
       xPadding={xPoint}
       yPadding={yPoint}
       // offsetX={scaledSpacedOriginalImg.width }
@@ -277,17 +294,17 @@ const DesignLayer = () => {
       <Image
         id={IMAGE_NODE_ID}
         image={originalImage}
-        width={scaledSpacedOriginalImg.width + backgroundWidthAddon}
-        height={scaledSpacedOriginalImg.height + backgroundHeightAddon}
-        offsetX={scaledSpacedOriginalImg.width / 2}
-        offsetY={scaledSpacedOriginalImg.height / 2}
+        width={finalBackgroundWidth}
+        height={finalBackgroundHeight}
+        offsetX={finalBackgroundOffsetX}
+        offsetY={finalBackgroundOffsetY}
         listening={false}
         filters={finetunesAndFilter}
         ref={imageNodeRef}
 
         {...finetunesProps}
-        x={scaledSpacedOriginalImg.width / 2 + backgroundX}
-        y={scaledSpacedOriginalImg.height / 2 + backgroundY}
+        x={(canvasWidth ? canvasWidth : scaledSpacedOriginalImg.width) / 2 + backgroundX}
+        y={(canvasHeight ? canvasHeight : scaledSpacedOriginalImg.height) / 2 + backgroundY}
         scaleX={FlipBackground ? -1 : 1}
         rotation={backgroundRotation}
       />

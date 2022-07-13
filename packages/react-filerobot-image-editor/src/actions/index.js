@@ -41,6 +41,7 @@ import replaceBackgroundAction, { MOVE_BACKGROUND } from "./addedActions/replace
 import backgroundSize, { BACKGROUND_RESIZE } from "./addedActions/backgroundSize";
 import flipBackground, { FLIP_BACKGROUND } from "./addedActions/flipBackground";
 import setCropRatio, { SET_CROP_RATIO } from "./addedActions/setCropRatio";
+import setBackgroundImgRef, { SET_BACKGROUND_IMG } from "./addedActions/setBackgroundImgRef";
 
 
 export default {
@@ -79,6 +80,7 @@ export default {
   [BACKGROUND_RESIZE]: backgroundSize,
   [FLIP_BACKGROUND]: flipBackground,
   [SET_CROP_RATIO]: setCropRatio,
+  [SET_BACKGROUND_IMG]:setBackgroundImgRef
 };
 
 export {
@@ -117,4 +119,5 @@ export {
   BACKGROUND_RESIZE,
   FLIP_BACKGROUND,
   SET_CROP_RATIO,
+  SET_BACKGROUND_IMG,
 };

@@ -21,7 +21,7 @@ const setCanvasSize = (state, payload) => {
   //   0,
   //   state.originalImage.width
   // );
-
+  //
   // const restrictedHeight = restrictNumber(
   //   payload.canvasHeight,
   //   0,

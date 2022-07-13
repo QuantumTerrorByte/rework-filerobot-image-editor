@@ -17,14 +17,13 @@ const MainCanvas = () => {
 
   useEffect(() => {
     // console.log("---------------------------------------");
-    // console.log("canvasHeight: " + providedAppContext.canvasHeight);
-    // console.log("canvasWidth: " + providedAppContext.canvasWidth);
+    console.log("canvasHeight: " + providedAppContext.canvasHeight);
+    console.log("canvasWidth: " + providedAppContext.canvasWidth);
+    console.log("initialCanvasHeight: " + providedAppContext.initialCanvasHeight);
+    console.log("initialCanvasWidth: " + providedAppContext.initialCanvasWidth);
     // console.log("canvasScale: " + providedAppContext.canvasScale);
-    // console.log("initialCanvasHeight: " + providedAppContext.initialCanvasHeight);
-    // console.log("initialCanvasWidth: " + providedAppContext.initialCanvasWidth);
     // console.log(providedAppContext.shownImageDimensions);
-  }, [providedAppContext.shownImageDimensions]);
-
+  }, [providedAppContext]);
 
   const setNewCanvasSize = useCallback(
     ({ width: containerWidth, height: containerHeight }) => {

@@ -1,41 +1,66 @@
 /** External Dependencies */
-import React, { memo } from 'react';
-import PropTypes from 'prop-types';
-import ThemeProvider from '@scaleflex/ui/theme';
+import React, { memo } from "react";
+import PropTypes from "prop-types";
+import ThemeProvider from "@scaleflex/ui/theme";
 
 /** Internal Dependencies */
-import App from 'components/App';
-import { AppProvider } from 'context';
-import defaultConfig from 'context/defaultConfig';
-import deepMerge from 'utils/deepMerge';
-import { FontsFaces, IconsColor, OverrideDefaultStyles } from './globalStyles';
+import App from "components/App";
+import { AppProvider } from "context";
+import defaultConfig from "context/defaultConfig";
+import deepMerge from "utils/deepMerge";
+import { FontsFaces, IconsColor, OverrideDefaultStyles } from "./globalStyles";
+
+const adaptAnnotationsToScreenSize = (annotations) => {
+  const isMobile = window.innerWidth < 420;
+  const resizeCoefficient = 1
+  if (isMobile && annotations) {
+    for (const [key, value] of Object.entries(annotations)) {
+      annotations[key] = {
+        ...value,
+        x: value.x * 0.7,
+        width: value.width ? value.width * resizeCoefficient : undefined,
+        height: value.height ? value.height * resizeCoefficient : undefined
+      };
+    }
+  }
+  return annotations;
+};
 
 const AssemblyPoint = (props) => {
   const { img, source, useCloudimage, cloudimage } = props;
+  debugger
+
   // TODO: Remove this property from here after PROD. release
+  //============= temp adaptive
+  const adaptedAnnotations = adaptAnnotationsToScreenSize(props.loadableDesignState.annotations);
+  debugger
+  props = { ...props, loadableDesignState: { ...props.loadableDesignState, annotations: adaptedAnnotations } };
+
+  //=============
+
   if (img) {
     throw new Error(
-      '`img` is renamed to `source` please consider renaming it from your configurations.',
+      "`img` is renamed to `source` please consider renaming it from your configurations."
     );
   }
   if (
     !source ||
-    (typeof source !== 'string' && !(source instanceof HTMLImageElement))
+    (typeof source !== "string" && !(source instanceof HTMLImageElement))
   ) {
     throw new Error(
-      '`source` property is required either a string of image url or a HTMLImageElement for the image that will be edited.',
+      "`source` property is required either a string of image url or a HTMLImageElement for the image that will be edited."
     );
   }
   if (useCloudimage) {
     if (cloudimage?.imageSealing?.enable && !cloudimage?.imageSealing?.salt) {
       throw new Error(
-        '`salt` property of imageSealing object is required in cloudimage mode as long as `imageSealing` is enabled.',
+        "`salt` property of imageSealing object is required in cloudimage mode as long as `imageSealing` is enabled."
       );
     }
   }
 
   const defaultAndProvidedConfigMerged = deepMerge(defaultConfig, props);
-
+  debugger
   return (
     <React.StrictMode>
       <ThemeProvider theme={defaultAndProvidedConfigMerged.theme}>
@@ -54,7 +79,7 @@ AssemblyPoint.defaultProps = {
   useCloudimage: false,
   cloudimage: {},
   // TODO: Remove this property from here after PROD. release
-  img: undefined,
+  img: undefined
 };
 
 AssemblyPoint.propTypes = {
@@ -62,17 +87,17 @@ AssemblyPoint.propTypes = {
     PropTypes.string,
     PropTypes.instanceOf(HTMLImageElement),
     PropTypes.instanceOf(SVGImageElement),
-    PropTypes.instanceOf(ImageBitmap),
+    PropTypes.instanceOf(ImageBitmap)
   ]).isRequired,
   // TODO: Remove this property from here after PROD. release
   img: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.instanceOf(HTMLImageElement),
     PropTypes.instanceOf(SVGImageElement),
-    PropTypes.instanceOf(ImageBitmap),
+    PropTypes.instanceOf(ImageBitmap)
   ]),
   useCloudimage: PropTypes.bool,
-  cloudimage: PropTypes.instanceOf(Object),
+  cloudimage: PropTypes.instanceOf(Object)
 };
 
 export default memo(AssemblyPoint);

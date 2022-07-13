@@ -9,8 +9,10 @@ const StyledCanvasContainer = styled.div`
   height: calc(100% - 94px - 12px);
   background: ${({ theme }) => theme.palette['bg-primary']};
   overflow: hidden;
-  min-height: 250px;
-  flex-grow: 1;
+  //min-height: 485px;
+  min-height: 70%;
+  height: 70%;
+  //flex-grow: 1;
 `;
 
 const StyledOrignalImage = styled.img`

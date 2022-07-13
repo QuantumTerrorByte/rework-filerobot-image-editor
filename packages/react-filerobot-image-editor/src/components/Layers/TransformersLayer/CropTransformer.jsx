@@ -35,17 +35,18 @@ const CropTransformer = () => {
     canvasWidth,
     backgroundWidthAddon,
     backgroundHeightAddon,
-    cropRatio
+    cropRatio,
+    backgroundRef
   } = useStore();
 
   const [isMouseDown, setIsMouseDown] = useState(false);
-  const [startPoint, setStartPoint] = useState({});
   const [backgroundStartPoint, setBackgroundStartPoint] = useState({});
 
   const cropShapeRef = useRef();
   const cropTransformerRef = useRef();
   const tmpImgNodeRef = useRef();
   const shownImageDimensionsRef = useRef();
+  const [startPoint, setStartPoint] = useState({});
 
   const cropConfig = config[TOOLS_IDS.CROP];
 
@@ -69,7 +70,6 @@ const CropTransformer = () => {
       width: cropWidth,
       height: cropHeight
     };
-
     debugger
     dispatch({
       type: SET_CROP,
@@ -79,116 +79,16 @@ const CropTransformer = () => {
         dismissHistory: false
       }
     });
-  }); // todo add dependencies
+  }, [
+    crop,
+    designLayer,
+    originalImage,
+    cropRatio,
+    canvasWidth,
+    canvasHeight
+  ]); // todo add dependencies
 
   //==========================================
-
-  const saveCrop = ({ width, height, x, y }, noHistory) => { //transformer
-    const newCrop = {
-      x: isFlippedX ? shownImageDimensions.width - x - width : x,
-      y: isFlippedY ? shownImageDimensions.height - y - height : y,
-      width,
-      height
-    };
-
-    const isOldCropBiggerThanResize =
-      crop.width >= resize.width && crop.height >= resize.height;
-    if (
-      resize.width &&
-      resize.height &&
-      (width < resize.width || height < resize.height) &&
-      isOldCropBiggerThanResize
-    ) {
-      dispatch({
-        type: SET_FEEDBACK,
-        payload: {
-          feedback: {
-            message: t("cropSizeLowerThanResizedWarning"),
-            status: FEEDBACK_STATUSES.WARNING
-          }
-        }
-      });
-    }
-
-    dispatch({
-      type: SET_CROP,
-      payload: {
-        ...crop,
-        ...newCrop,
-        dismissHistory: noHistory
-      }
-    });
-  };
-
-  const saveBoundedCropWithLatestConfig = (cropWidth, cropHeight) => {
-    if (cropTransformerRef.current && cropShapeRef.current) {
-      cropTransformerRef.current.nodes([cropShapeRef.current]);
-    }
-
-    const imageDimensions = shownImageDimensionsRef.current;
-
-    const attrs = {
-      width: cropWidth,
-      height: cropHeight,
-      x: crop.x ?? 0,
-      y: crop.y ?? 0
-    };
-
-    saveCrop(
-      boundResizing(
-        attrs,
-        attrs,
-        { ...imageDimensions, abstractX: 0, abstractY: 0 },
-        isCustom || isEllipse ? false : getProperCropRatio(),
-        cropConfig
-      ),
-      true
-    );
-  };
-
-  const limitDragging = (e) => {
-    const currentCropShape = e.target;
-    currentCropShape.setAttrs(
-      boundDragging(currentCropShape.attrs, shownImageDimensionsRef.current)
-    );
-  };
-
-  // useEffect(() => {
-  //   if (designLayer && cropTransformerRef.current && cropShapeRef.current) {
-  //     if (tmpImgNodeRef.current) {
-  //       tmpImgNodeRef.current.cache();
-  //     }
-  //     cropTransformerRef.current.nodes([cropShapeRef.current]);
-  //   }
-  //
-  //   return () => {
-  //     if (tmpImgNodeRef.current) {
-  //       tmpImgNodeRef.current.clearCache();
-  //     }
-  //   };
-  // }, [designLayer, originalImage, shownImageDimensions]);
-
-  useEffect(() => {
-    if (
-      cropTransformerRef.current &&
-      cropShapeRef.current &&
-      shownImageDimensionsRef.current &&
-      crop.width &&
-      crop.height
-    ) {
-      saveBoundedCropWithLatestConfig(crop.width, crop.height);
-    }
-  }, [cropConfig, shownImageDimensions.width, shownImageDimensions.height]);
-
-  useEffect(() => {
-    if (shownImageDimensionsRef.current) {
-      const imageDimensions = shownImageDimensionsRef.current;
-      saveBoundedCropWithLatestConfig(
-        crop.width ?? imageDimensions.width,
-        crop.height ?? imageDimensions.height
-      );
-    }
-  }, [cropRatio]);
 
   useEffect(() => {
     if (shownImageDimensions) {
@@ -203,22 +103,6 @@ const CropTransformer = () => {
   const enabledAnchors = isCustom || isEllipse
     ? undefined
     : ["top-left", "bottom-left", "top-right", "bottom-right"];
-
-  /*const saveCropFromEvent = (e, noHistory = false) => { //apply crop from transform end
-    if ( !e.target) {
-      return;
-    }
-
-    saveCrop(
-      {
-        width: e.target.width() * e.target.scaleX(),
-        height: e.target.height() * e.target.scaleY(),
-        x: e.target.x(),
-        y: e.target.y()
-      },
-      noHistory
-    );
-  };*/
 
   let attrs;
   if ( !crop.width && !crop.height) {
@@ -252,31 +136,44 @@ const CropTransformer = () => {
     globalCompositeOperation: "destination-out"
   };
 
-
   const selectBackground = (e) => {
     const sp = { x: e.evt.x, y: e.evt.y };
+    console.log("SELECT");
     setIsMouseDown(true);
     setBackgroundStartPoint({ x: backgroundX, y: backgroundY });
     setStartPoint(sp);
   };
   const unselectBackground = (e) => {
+    console.log("UN SELECT");
     setIsMouseDown(false);
+    const changePosition = { x: e.evt.x - startPoint.x, y: e.evt.y - startPoint.y };
+    dispatch({
+      type: MOVE_BACKGROUND,
+      payload: {
+        x: backgroundStartPoint.x + changePosition.x,
+        y: backgroundStartPoint.y + changePosition.y
+      }
+    });
   };
   const moveBackground = (e) => {
     if (isMouseDown) {
       const changePosition = { x: e.evt.x - startPoint.x, y: e.evt.y - startPoint.y };
-      console.log(changePosition);
-      dispatch({
-        type: MOVE_BACKGROUND,
-        payload: {
-          x: backgroundStartPoint.x + changePosition.x,
-          y: backgroundStartPoint.y + changePosition.y
-        }
-      });
+      console.log("changePosition");
+      if (backgroundRef?.current) {
+        backgroundRef.current.x(backgroundStartPoint.x + changePosition.x + (canvasWidth / 2));
+        backgroundRef.current.y(backgroundStartPoint.y + changePosition.y + (canvasHeight / 2));
+      }
+      // dispatch({
+      //   type: MOVE_BACKGROUND,
+      //   payload: {
+      //     x: backgroundStartPoint.x + changePosition.x,
+      //     y: backgroundStartPoint.y + changePosition.y
+      //   }
+      // });
     }
   };
   const resizeBackground = (e) => {
-    console.log(e);
+    console.log("RESIZE");
     let direction = e.evt.deltaY > 0;
     dispatch(
       {
@@ -293,10 +190,8 @@ const CropTransformer = () => {
   return (
     <>
       <Rect
-        // image={originalImage}
         x={0}
         y={0}
-        // scaleX={canvasScale}
         width={canvasWidth}
         height={canvasHeight}
         fill="black"

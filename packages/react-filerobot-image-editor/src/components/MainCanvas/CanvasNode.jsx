@@ -217,10 +217,10 @@ const CanvasNode = ({ children }) => {
       ref={canvasRef}
       width={canvasWidth}
       height={canvasHeight}
-      scaleX={zoomedResponsiveCanvasScale}
-      scaleY={zoomedResponsiveCanvasScale}
-      x={(isZoomEnabled && zoom.x) || null}
-      y={(isZoomEnabled && zoom.y) || null}
+      // scaleX={zoomedResponsiveCanvasScale}
+      // scaleY={zoomedResponsiveCanvasScale}
+      // x={(isZoomEnabled && zoom.x) || null}
+      // y={(isZoomEnabled && zoom.y) || null}
       zoomFactor={(isZoomEnabled && zoom.factor) || defaultZoomFactor}
       onWheel={isZoomEnabled ? handleZoom : undefined}
       onTap={clearSelections}

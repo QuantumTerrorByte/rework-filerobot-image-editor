@@ -49,7 +49,7 @@ const getInitialAppState = (config = {}) => {
     resize: {},
     // --- End of design states ---
     shownImageDimensions: {},
-    ...loadedConfigPrepared, // if provided it would override the above design states
+    ...loadedConfigPrepared, // if provided it would override the above design states !!!
     pointerCssIcon: POINTER_ICONS.DEFAULT,
     canvasScale: 1,
     zoom: {
