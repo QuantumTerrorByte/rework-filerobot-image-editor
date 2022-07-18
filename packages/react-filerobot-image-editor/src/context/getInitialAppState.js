@@ -2,6 +2,7 @@
 import { DEFAULT_ZOOM_FACTOR, POINTER_ICONS, TOOLS_IDS } from "utils/constants";
 import filterStrToClass from "utils/filterStrToClass";
 import finetunesStrsToClasses from "utils/finetunesStrsToClasses";
+import { DIGEST, LETTER } from "../custom/bookFormats/bookFormats";
 
 const getInitialAppState = (config = {}) => {
   const loadedConfigPrepared = { ...config.loadableDesignState };
@@ -22,7 +23,9 @@ const getInitialAppState = (config = {}) => {
     backgroundRotation: 0,
     backgroundWidthAddon: 0,
     backgroundHeightAddon: 0,
-    cropRatio: 1.5,
+    // cropRatio: 1.5,
+    template: 1,
+    bookFormat: DIGEST,
     // --- Start of design states ---
     imgSrc:
       typeof config.source === "string"
@@ -49,7 +52,9 @@ const getInitialAppState = (config = {}) => {
     resize: {},
     // --- End of design states ---
     shownImageDimensions: {},
+
     ...loadedConfigPrepared, // if provided it would override the above design states !!!
+
     pointerCssIcon: POINTER_ICONS.DEFAULT,
     canvasScale: 1,
     zoom: {

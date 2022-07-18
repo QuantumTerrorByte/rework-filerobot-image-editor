@@ -14,6 +14,7 @@ import {
   TOOLS_IDS
 } from "utils/constants";
 import { boundDragging, boundResizing } from "./cropAreaBounding";
+import getCropBookSize from "../../../custom/getCropBookSize";
 
 const CropTransformer = () => {
   const {
@@ -23,20 +24,21 @@ const CropTransformer = () => {
     originalImage,
     shownImageDimensions,
     adjustments: { crop = {}, isFlippedX, isFlippedY } = {},
-    resize = {},
     config,
-    t,
     backgroundX,
     backgroundY,
+    t,
+    resize = {},
     initialCanvasWidth,
     initialCanvasHeight,
-    canvasHeight,
     canvasScale,
+    canvasHeight,
     canvasWidth,
     backgroundWidthAddon,
     backgroundHeightAddon,
     cropRatio,
-    backgroundRef
+    backgroundRef,
+    bookFormat
   } = useStore();
 
   const [isMouseDown, setIsMouseDown] = useState(false);
@@ -61,15 +63,7 @@ const CropTransformer = () => {
   //========================================== initial crop state
 
   useEffect(() => {
-    const cropHeight = canvasHeight * 0.75;
-    const cropWidth = cropHeight / cropRatio;
-
-    const newCrop = {
-      x: (canvasWidth - cropWidth) / 2,
-      y: (canvasHeight - cropHeight) / 2,
-      width: cropWidth,
-      height: cropHeight
-    };
+    const newCrop = getCropBookSize({ canvasWidth, canvasHeight, bookFormat });
     debugger
     dispatch({
       type: SET_CROP,
@@ -85,7 +79,8 @@ const CropTransformer = () => {
     originalImage,
     cropRatio,
     canvasWidth,
-    canvasHeight
+    canvasHeight,
+    bookFormat
   ]); // todo add dependencies
 
   //==========================================
@@ -136,17 +131,31 @@ const CropTransformer = () => {
     globalCompositeOperation: "destination-out"
   };
 
+  const getCoordinates = (e) => {
+    const coordinates = {};
+    if (e.evt instanceof TouchEvent) {
+      coordinates.x = e.evt.changedTouches[0].screenX;
+      coordinates.y = e.evt.changedTouches[0].screenY;
+    } else {
+      coordinates.x = e.evt.x;
+      coordinates.y = e.evt.y;
+    }
+    return coordinates;
+  };
+
   const selectBackground = (e) => {
-    const sp = { x: e.evt.x, y: e.evt.y };
+    debugger
+    console.log((1,5-1)*2);
+    const sp = getCoordinates(e);
     console.log("SELECT");
     setIsMouseDown(true);
     setBackgroundStartPoint({ x: backgroundX, y: backgroundY });
     setStartPoint(sp);
   };
-  const unselectBackground = (e) => {
-    console.log("UN SELECT");
+  const unselectBackground = (e) => {//TODO doc listener
     setIsMouseDown(false);
-    const changePosition = { x: e.evt.x - startPoint.x, y: e.evt.y - startPoint.y };
+    const coordinates = getCoordinates(e);
+    const changePosition = { x: coordinates.x - startPoint.x, y: coordinates.y - startPoint.y };
     dispatch({
       type: MOVE_BACKGROUND,
       payload: {
@@ -157,8 +166,8 @@ const CropTransformer = () => {
   };
   const moveBackground = (e) => {
     if (isMouseDown) {
-      const changePosition = { x: e.evt.x - startPoint.x, y: e.evt.y - startPoint.y };
-      console.log("changePosition");
+      const coordinates = getCoordinates(e);
+      const changePosition = { x: coordinates.x - startPoint.x, y: coordinates.y - startPoint.y };
       if (backgroundRef?.current) {
         backgroundRef.current.x(backgroundStartPoint.x + changePosition.x + (canvasWidth / 2));
         backgroundRef.current.y(backgroundStartPoint.y + changePosition.y + (canvasHeight / 2));
@@ -173,20 +182,26 @@ const CropTransformer = () => {
     }
   };
   const resizeBackground = (e) => {
-    console.log("RESIZE");
-    let direction = e.evt.deltaY > 0;
+    const scaleFactor = 5;
+    const direction = e.evt.deltaY > 0;
+
+    const ratio = backgroundRef.current.attrs.width / backgroundRef.current.attrs.height;
+    const height = backgroundHeightAddon + (direction ? scaleFactor : -scaleFactor);
+    const width = height * ratio;
+    console.log(ratio);
+
     dispatch(
       {
         type: BACKGROUND_RESIZE,
         payload: {
-          height: backgroundHeightAddon + (direction ? 10 : -10),
-          width: backgroundWidthAddon + (direction ? 10 : -10)
+          height,
+          width
         }
       }
     );
   };
   // ALT is used to center scaling
-  console.log(canvasWidth + " " + canvasHeight + " " + canvasScale);
+  // console.log(canvasWidth + " " + canvasHeight + " " + canvasScale);
   return (
     <>
       <Rect
@@ -200,8 +215,10 @@ const CropTransformer = () => {
 
         onMouseDown={selectBackground}
         onMouseUp={unselectBackground}
-        //todo optimization with ref
-        onMouseMove={moveBackground}
+        onMouseMove={moveBackground}//todo optimization with ref
+        onTouchStart={selectBackground}
+        onTouchEnd={unselectBackground}
+        onTouchMove={moveBackground}
         onWheel={resizeBackground}
       />
       {isEllipse ? (
@@ -221,6 +238,9 @@ const CropTransformer = () => {
               onMouseDown={selectBackground}
               onMouseUp={unselectBackground}
               onMouseMove={moveBackground}
+              onTouchStart={selectBackground}
+              onTouchEnd={unselectBackground}
+              onTouchMove={moveBackground}
               onWheel={resizeBackground}
         />
       )}

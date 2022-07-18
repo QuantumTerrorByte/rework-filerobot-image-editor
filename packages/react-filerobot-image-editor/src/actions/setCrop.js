@@ -13,9 +13,9 @@ const setCrop = (state, payload) => {
         : toPrecisedFloat(payload.ratio) ?? oldCrop.ratio,
     width: toPrecisedFloat(payload.width) ?? oldCrop.width,
     height: toPrecisedFloat(payload.height) ?? oldCrop.height,
-    ratioTitleKey: payload.ratioTitleKey ?? oldCrop.ratioTitleKey,
-    ratioGroupKey: payload.ratioGroupKey,
-    ratioFolderKey: payload.ratioFolderKey,
+    // ratioTitleKey: payload.ratioTitleKey ?? oldCrop.ratioTitleKey,
+    // ratioGroupKey: payload.ratioGroupKey,
+    // ratioFolderKey: payload.ratioFolderKey,
   };
 
   //check if old === new
@@ -28,10 +28,11 @@ const setCrop = (state, payload) => {
     (oldCrop.height === newCrop.height ||
       (newCrop.height === toPrecisedFloat(state.shownImageDimensions.height) &&
         !oldCrop.height)) &&
-    oldCrop.ratio === newCrop.ratio &&
-    oldCrop.ratioTitleKey === newCrop.ratioTitleKey &&
-    oldCrop.ratioGroupKey === newCrop.ratioGroupKey &&
-    oldCrop.ratioFolderKey === newCrop.ratioFolderKey
+    oldCrop.ratio === newCrop.ratio
+    // &&
+    // oldCrop.ratioTitleKey === newCrop.ratioTitleKey &&
+    // oldCrop.ratioGroupKey === newCrop.ratioGroupKey &&
+    // oldCrop.ratioFolderKey === newCrop.ratioFolderKey
   ) {
     return state;
   }

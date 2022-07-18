@@ -55,6 +55,8 @@ const SaveButton = () => {
       moreSaveOptions,
     },
   } = state;
+  console.log(state);
+  debugger
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [imageFileInfo, setImageFileInfo] = useState({ quality: 0.92 });
   const transformImgFn = useTransformedImgData();
@@ -73,6 +75,13 @@ const SaveButton = () => {
   const handleSave = () => {
     const transformedData = transformImgFn(imageFileInfo, false, true);
     const onSaveFn = optionSaveFnRef.current || onSave;
+
+    //=============== BEFORE SAVE SIZE MAPPING TODO
+
+
+
+    //===============
+
     const savingResult = onSaveFn(
       transformedData.imageData,
       transformedData.designState,

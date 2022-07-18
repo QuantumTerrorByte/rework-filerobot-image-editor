@@ -42,6 +42,7 @@ const StyledCanvasAndTools = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const StyledPhoneToolsAndTabs = styled.div`

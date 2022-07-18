@@ -59,11 +59,11 @@ const DesignLayer = () => {
     };
   }, [originalImage]);
 
-  // const originalImgSizeAfterRotation = useMemo(
-  //   () =>
-  //     getSizeAfterRotation(originalImage.width, originalImage.height, rotation),
-  //   [originalImage, rotation]
-  // );
+  const originalImgSizeAfterRotation = useMemo(
+    () =>
+      getSizeAfterRotation(originalImage.width, originalImage.height, rotation),
+    [originalImage, rotation]
+  );
 
   // height/width
   const originalImgInitialScale = useMemo(
@@ -200,7 +200,6 @@ const DesignLayer = () => {
     if (originalImage) {
       cacheImageNode();
     }
-
     return () => {
       imageNodeRef.current?.clearCache();
     };
@@ -226,11 +225,13 @@ const DesignLayer = () => {
   ) {
     return null;
   }
+
   const cropCenterRotatedPoint = getCenterRotatedPoint(
     crop.x,
     crop.y,
     rotation
   );
+
   const xPointAfterCrop =
     xPointToCenterImgInCanvas +
     (!isCurrentlyCropping && crop.width
@@ -258,14 +259,13 @@ const DesignLayer = () => {
   const yPoint = isCurrentlyCropping ? yPointNoResizeNoCrop : yPointAfterCrop;
 
   const finalScaleX =
-    (isFlippedX ? -1 : 1) *
+    // (isFlippedX ? -1 : 1) *
     (isCurrentlyCropping ? 1 : resizedX) *
     scaleAfterRotation;
   const finalScaleY =
-    (isFlippedY ? -1 : 1) *
+    // (isFlippedY ? -1 : 1) *
     (isCurrentlyCropping ? 1 : resizedY) *
     scaleAfterRotation;
-
 
   const widthWithAddons = scaledSpacedOriginalImg.width + backgroundWidthAddon;
   const heightWithAddons = scaledSpacedOriginalImg.height + backgroundHeightAddon;
@@ -273,6 +273,8 @@ const DesignLayer = () => {
   const finalBackgroundWidth = widthWithAddons;
   const finalBackgroundOffsetX = widthWithAddons / 2;
   const finalBackgroundOffsetY = heightWithAddons / 2;
+  const finalBackgroundX = (canvasWidth ? canvasWidth : scaledSpacedOriginalImg.width) / 2 + backgroundX;
+  const finalBackgroundY = (canvasHeight ? canvasHeight : scaledSpacedOriginalImg.height) / 2 + backgroundY;
 
   console.log("RENDER");
   return (
@@ -303,8 +305,8 @@ const DesignLayer = () => {
         ref={imageNodeRef}
 
         {...finetunesProps}
-        x={(canvasWidth ? canvasWidth : scaledSpacedOriginalImg.width) / 2 + backgroundX}
-        y={(canvasHeight ? canvasHeight : scaledSpacedOriginalImg.height) / 2 + backgroundY}
+        x={finalBackgroundX}
+        y={finalBackgroundY}
         scaleX={FlipBackground ? -1 : 1}
         rotation={backgroundRotation}
       />

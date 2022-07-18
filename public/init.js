@@ -77,8 +77,8 @@ const pluginConfig = {
         id: "Ellipse-1350843087957",
         name: "Ellipse",
         opacity: 1,
-        radiusX: 42.67894448892216,
-        radiusY: 42.67894448892216,
+        radiusX: 1,
+        radiusY: 1,
         rotation: -0,
         scaleX: 0.9999999999999989,
         scaleY: 1.0000000000000004,
@@ -89,19 +89,18 @@ const pluginConfig = {
         shadowOpacity: 1,
         stroke: "#000000",
         strokeWidth: 0,
-        x: 168.70163035378658,
-        y: 60.84678669806624
+        x: 0,
+        y: 4
       },
       "Rect-1238543392829": {
         cornerRadius: 0,
         fill: "#000000",
-        height: 188.72816891095107,
         id: "Rect-1238543392829",
         name: "Rect",
         opacity: 1,
-        rotation: 45,
-        scaleX: 0.9999999999999998,
-        scaleY: 0.9999999999999999,
+        rotation: 0,
+        scaleX: 1,
+        scaleY: 1,
         shadowBlur: 0,
         shadowColor: "#000000",
         shadowOffsetX: 0,
@@ -109,17 +108,18 @@ const pluginConfig = {
         shadowOpacity: 1,
         stroke: "#000000",
         strokeWidth: 0,
-        width: 208.4065625622316,
-        x: 281.60384245300827,
-        y: 130.51972907859988
+        height: 2,
+        width: 2,
+        x: 0,
+        y: 5
       },
       "Text-138291345185": {
         align: "left",
         fill: "#000000",
         fontFamily: "Comic-sans",
-        fontSize: 24,
+        fontSize: 0.1,
         fontStyle: "bold italic",
-        height: 48.944809095072856,
+        height: 2,
         id: "Text-138291345185",
         letterSpacing: 0,
         lineHeight: 1,
@@ -133,15 +133,53 @@ const pluginConfig = {
         stroke: "#000000",
         strokeWidth: 1,
         text: "Filerobot...",
-        width: 115.91587891981402,
-        x: 271.3187268304967,
-        y: 87.90088164013082
+        width: 5,
+        x: 0,
+        y: 0
+      },
+      "Polygon-671435088951": {
+        fill: "#000000",
+        id: "Polygon-671435088951",
+        name: "Polygon",
+        opacity: 1,
+        radius: 1,
+        shadowBlur: 0,
+        shadowColor: "#000000",
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        shadowOpacity: 1,
+        // scaleY: 1,
+        // scaleX: 1,
+        sides: 4,
+        stroke: "#000000",
+        strokeWidth: 0,
+        x: 0,
+        y: 1
+      },
+      "Arrow-452178614845": {
+        fill: "#000000",
+        id: "Arrow-452178614845",
+        lineCap: "butt",
+        name: "Arrow",
+        opacity: 1,
+        pointerLength: undefined,
+        pointerWidth: undefined,
+        points: [0, 0, 222.06605157840522, -30.02384727924226],
+        shadowBlur: 0,
+        shadowColor: "#000000",
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        shadowOpacity: 1,
+        stroke: "#000000",
+        strokeWidth: 3,
+        x: 0,
+        y: 8
       }
     }
   }
 };
 
-function onSave(imageInfo) {
+function onSave(imageInfo, designState) {
   const url = imageInfo[useCloudimage ? "cloudimageUrl" : "imageBase64"];
   const { fullName: fileName } = imageInfo;
   debugger

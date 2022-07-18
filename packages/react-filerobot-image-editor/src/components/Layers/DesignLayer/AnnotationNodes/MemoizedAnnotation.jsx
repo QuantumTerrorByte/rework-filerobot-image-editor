@@ -13,6 +13,7 @@ const MemoizedAnnotation = ({
                               selectionsIds
                             }) => {
   const AnnotationComponent = ANNOTATION_NAMES_TO_COMPONENT[annotation.name];
+  debugger
   const { tabId } = useStore();
 
   return (

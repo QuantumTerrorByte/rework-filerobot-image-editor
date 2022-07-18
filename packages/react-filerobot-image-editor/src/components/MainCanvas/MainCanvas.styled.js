@@ -6,11 +6,11 @@ const StyledCanvasContainer = styled.div`
   width: 100%;
   position: relative;
   // backup for flex-grow, 94px, 12px = toolsbar's maxheight, app container padding.
-  height: calc(100% - 94px - 12px);
+  //height: calc(100% - 94px - 12px);
   background: ${({ theme }) => theme.palette['bg-primary']};
   overflow: hidden;
-  //min-height: 485px;
-  min-height: 70%;
+  min-height: 485px;
+  //min-height: 70%;
   height: 70%;
   //flex-grow: 1;
 `;

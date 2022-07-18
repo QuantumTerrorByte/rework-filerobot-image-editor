@@ -9,34 +9,12 @@ import { AppProvider } from "context";
 import defaultConfig from "context/defaultConfig";
 import deepMerge from "utils/deepMerge";
 import { FontsFaces, IconsColor, OverrideDefaultStyles } from "./globalStyles";
+import adaptAnnotationsToScreenSize from "../../custom/adaptAnnotationsToScreenSize";
 
-const adaptAnnotationsToScreenSize = (annotations) => {
-  const isMobile = window.innerWidth < 420;
-  const resizeCoefficient = 1
-  if (isMobile && annotations) {
-    for (const [key, value] of Object.entries(annotations)) {
-      annotations[key] = {
-        ...value,
-        x: value.x * 0.7,
-        width: value.width ? value.width * resizeCoefficient : undefined,
-        height: value.height ? value.height * resizeCoefficient : undefined
-      };
-    }
-  }
-  return annotations;
-};
+
 
 const AssemblyPoint = (props) => {
   const { img, source, useCloudimage, cloudimage } = props;
-  debugger
-
-  // TODO: Remove this property from here after PROD. release
-  //============= temp adaptive
-  const adaptedAnnotations = adaptAnnotationsToScreenSize(props.loadableDesignState.annotations);
-  debugger
-  props = { ...props, loadableDesignState: { ...props.loadableDesignState, annotations: adaptedAnnotations } };
-
-  //=============
 
   if (img) {
     throw new Error(
@@ -60,7 +38,7 @@ const AssemblyPoint = (props) => {
   }
 
   const defaultAndProvidedConfigMerged = deepMerge(defaultConfig, props);
-  debugger
+
   return (
     <React.StrictMode>
       <ThemeProvider theme={defaultAndProvidedConfigMerged.theme}>

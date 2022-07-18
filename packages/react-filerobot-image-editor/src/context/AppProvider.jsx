@@ -1,14 +1,14 @@
 /** External Dependencies */
-import React, { useCallback, useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { useTheme } from '@scaleflex/ui/theme/hooks/use-theme';
+import React, { useCallback, useEffect, useMemo } from "react";
+import PropTypes from "prop-types";
+import { useTheme } from "@scaleflex/ui/theme/hooks/use-theme";
 
 /** Internal Dependencies */
-import { useAppReducer } from 'hooks';
-import { translate, updateTranslations } from 'utils/translator';
-import appReducer from './appReducer';
-import AppContext from './AppContext';
-import getInitialAppState from './getInitialAppState';
+import { useAppReducer } from "hooks";
+import { translate, updateTranslations } from "utils/translator";
+import appReducer from "./appReducer";
+import AppContext from "./AppContext";
+import getInitialAppState from "./getInitialAppState";
 
 let isFieMounted = true;
 
@@ -16,12 +16,12 @@ const AppProvider = ({ children, config = {} }) => {
   const [state, _dispatch] = useAppReducer(
     appReducer,
     getInitialAppState(config),
-    config,
+    config
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(state);
-  },[state])
+  }, [state]);
 
   useEffect(() => {
     isFieMounted = true;
@@ -37,12 +37,19 @@ const AppProvider = ({ children, config = {} }) => {
         _dispatch(...args);
       }
     },
-    [_dispatch],
+    [_dispatch]
   );
 
   useEffect(() => {
     updateTranslations(config.translations, config.language);
   }, [config.useBackendTranslations, config.language, config.translations]);
+
+
+  const dispatcherDecorator = (dispatch) => (action) => {
+    console.log("resize");
+    return dispatch(action);
+  };
+  bd  => state => konva
 
   const theme = useTheme();
   const providedValue = useMemo(
@@ -50,10 +57,10 @@ const AppProvider = ({ children, config = {} }) => {
       ...state,
       config,
       theme,
-      dispatch,
-      t: translate,
+      dispatch: dispatcherDecorator(dispatch),
+      t: translate
     }),
-    [config, state],
+    [config, state]
   );
 
   return (
@@ -62,12 +69,12 @@ const AppProvider = ({ children, config = {} }) => {
 };
 
 AppProvider.defaultProps = {
-  config: {},
+  config: {}
 };
 
 AppProvider.propTypes = {
   children: PropTypes.node.isRequired,
-  config: PropTypes.instanceOf(Object),
+  config: PropTypes.instanceOf(Object)
 };
 
 export default AppProvider;

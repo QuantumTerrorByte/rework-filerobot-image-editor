@@ -42,6 +42,8 @@ import backgroundSize, { BACKGROUND_RESIZE } from "./addedActions/backgroundSize
 import flipBackground, { FLIP_BACKGROUND } from "./addedActions/flipBackground";
 import setCropRatio, { SET_CROP_RATIO } from "./addedActions/setCropRatio";
 import setBackgroundImgRef, { SET_BACKGROUND_IMG } from "./addedActions/setBackgroundImgRef";
+import setBookFormat, { SET_BOOK_FORMAT } from "./addedActions/setBookFormat";
+import setResizedAnnotations, { SET_RESIZED_ANNO } from "./addedActions/setResizedAnnotations";
 
 
 export default {
@@ -80,7 +82,9 @@ export default {
   [BACKGROUND_RESIZE]: backgroundSize,
   [FLIP_BACKGROUND]: flipBackground,
   [SET_CROP_RATIO]: setCropRatio,
-  [SET_BACKGROUND_IMG]:setBackgroundImgRef
+  [SET_BACKGROUND_IMG]: setBackgroundImgRef,
+  [SET_BOOK_FORMAT]: setBookFormat,
+  [SET_RESIZED_ANNO]:  setResizedAnnotations,
 };
 
 export {
@@ -120,4 +124,6 @@ export {
   FLIP_BACKGROUND,
   SET_CROP_RATIO,
   SET_BACKGROUND_IMG,
+  SET_BOOK_FORMAT,
+  SET_RESIZED_ANNO,
 };

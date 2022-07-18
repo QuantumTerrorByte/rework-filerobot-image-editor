@@ -11,19 +11,20 @@ import digestMini from "./imgs/Digest mini 5x8.png";
 import letter from "./imgs/Letter 4.72x7.48.png";
 import pocket from "./imgs/Pocket 4.12x6.75.png";
 import uSTrade from "./imgs/US trade 6x9.png";
-import { SET_CROP_RATIO } from "../../../actions/addedActions/setCropRatio";
+import { DIGEST, DIGEST_MINI, LETTER, POCKET, US_TRADE } from "../../../custom/bookFormats/bookFormats";
+import { SET_BOOK_FORMAT } from "../../../actions";
 
 const Crop = ({ selectTool, isSelected }) => {
   const dispatch = useStore().dispatch;
   const { config, t } = useStore();
 
-  const setRatio = (ratio) => {
+  const setBookFormat = (format) => {
+
     dispatch({
-      type: SET_CROP_RATIO,
-      payload: ratio
+      type: SET_BOOK_FORMAT,
+      payload: format
     });
   };
-
 
   return (
     <div className={"crop-panel_container"}>
@@ -41,31 +42,31 @@ const Crop = ({ selectTool, isSelected }) => {
         <img src={digest} alt=""
              className={"crop-panel_ratio-button"}
              onClick={() => {
-               setRatio(8.5 / 5.5);
+               setBookFormat(DIGEST);
              }}
         />
         <img src={digestMini} alt=""
              className={"crop-panel_ratio-button"}
              onClick={() => {
-               setRatio(8 / 5);
+               setBookFormat(DIGEST_MINI);
              }}
         />
         <img src={letter} alt=""
              className={"crop-panel_ratio-button"}
              onClick={() => {
-               setRatio(7.48 / 4.72);
+               setBookFormat(LETTER);
              }}
         />
         <img src={pocket} alt=""
              className={"crop-panel_ratio-button"}
              onClick={() => {
-               setRatio(6.75 / 4.12);
+               setBookFormat(POCKET);
              }}
         />
         <img src={uSTrade} alt=""
              className={"crop-panel_ratio-button"}
              onClick={() => {
-               setRatio(9 / 6);
+               setBookFormat(US_TRADE);
              }}
         />
       </div>
