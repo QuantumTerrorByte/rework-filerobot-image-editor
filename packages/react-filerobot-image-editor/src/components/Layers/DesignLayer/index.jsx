@@ -41,7 +41,6 @@ const DesignLayer = () => {
   } = useStore();
   const imageNodeRef = useRef();
   const previewGroupRef = useRef();
-  debugger
   const isCurrentlyCropping = toolId === TOOLS_IDS.CROP;
 
   const finetunesAndFilter = useMemo(
@@ -276,7 +275,6 @@ const DesignLayer = () => {
   const finalBackgroundX = (canvasWidth ? canvasWidth : scaledSpacedOriginalImg.width) / 2 + backgroundX;
   const finalBackgroundY = (canvasHeight ? canvasHeight : scaledSpacedOriginalImg.height) / 2 + backgroundY;
 
-  console.log("RENDER");
   return (
     <Layer
       id={DESIGN_LAYER_ID}

@@ -27,16 +27,9 @@
   <body>
     <section class="content-wrapper">
       <div class="content">
-        <div class="view-button">
-            <a
-              class="transition-filled-button"
-              target="_blank"
-              href="https://github.com/scaleflex/filerobot-image-editor"
-            >
-              Editor app
-            </a>
-          <img src="./public/assets/arrow.png" alt="arrow-shape" />
-        </div>
+
+
+
         <div class="img-table container">
           <div id="config-wrapper" class="config-table">
             <h4>Images</h4>
@@ -136,13 +129,23 @@
                 <option value="Cloudimage">CloudImage</option>
               </select>
             </div>
+            <div class="view-button" >
+              <div>
+              <a id="loadButton" class="transition-filled-button">
+                LOAD
+              </a>
+              </div>
+              <div>
+              <a id="resetButton" class="transition-filled-button">
+                RESET
+              </a>
+              </div>
+            </div>
           </div>
-
 
           <div class="editor-container" id="editor_container">
             <div class="plugin-spinner"></div>
           </div>
-
 
         </div>
         <div class="blue-blur-ellipse"></div>

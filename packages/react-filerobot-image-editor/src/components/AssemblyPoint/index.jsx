@@ -11,8 +11,6 @@ import deepMerge from "utils/deepMerge";
 import { FontsFaces, IconsColor, OverrideDefaultStyles } from "./globalStyles";
 import adaptAnnotationsToScreenSize from "../../custom/adaptAnnotationsToScreenSize";
 
-
-
 const AssemblyPoint = (props) => {
   const { img, source, useCloudimage, cloudimage } = props;
 

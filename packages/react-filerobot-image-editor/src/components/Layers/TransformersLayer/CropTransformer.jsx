@@ -64,7 +64,6 @@ const CropTransformer = () => {
 
   useEffect(() => {
     const newCrop = getCropBookSize({ canvasWidth, canvasHeight, bookFormat });
-    debugger
     dispatch({
       type: SET_CROP,
       payload: {

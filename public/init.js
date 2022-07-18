@@ -59,6 +59,112 @@ const IMG_EDITOR_TABS = {
   resize: TABS.RESIZE
 };
 
+const initAnnotations =  {
+  "Ellipse-1350843087957": {
+    fill: "#000000",
+    id: "Ellipse-1350843087957",
+    name: "Ellipse",
+    opacity: 1,
+    radiusX: 1,
+    radiusY: 1,
+    rotation: -0,
+    scaleX: 0.9999999999999989,
+    scaleY: 1.0000000000000004,
+    shadowBlur: 0,
+    shadowColor: "#000000",
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    shadowOpacity: 1,
+    stroke: "#000000",
+    strokeWidth: 0,
+    x: 0,
+    y: 4
+  },
+  "Rect-1238543392829": {
+    cornerRadius: 0,
+    fill: "#000000",
+    id: "Rect-1238543392829",
+    name: "Rect",
+    opacity: 1,
+    rotation: 0,
+    scaleX: 1,
+    scaleY: 1,
+    shadowBlur: 0,
+    shadowColor: "#000000",
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    shadowOpacity: 1,
+    stroke: "#000000",
+    strokeWidth: 0,
+    height: 2,
+    width: 2,
+    x: 0,
+    y: 5
+  },
+  "Text-138291345185": {
+    align: "left",
+    fill: "#000000",
+    fontFamily: "Comic-sans",
+    fontSize: 1,
+    fontStyle: "bold italic",
+    height: 2,
+    id: "Text-138291345185",
+    letterSpacing: 0,
+    lineHeight: 1,
+    name: "Text",
+    opacity: 1,
+    shadowBlur: 0,
+    shadowColor: "#000000",
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    shadowOpacity: 1,
+    stroke: "#000000",
+    strokeWidth: 1,
+    text: "Filerobot...",
+    width: 5,
+    x: 0,
+    y: 0
+  },
+  "Polygon-671435088951": {
+    fill: "#000000",
+    id: "Polygon-671435088951",
+    name: "Polygon",
+    opacity: 1,
+    radius: 1,
+    shadowBlur: 0,
+    shadowColor: "#000000",
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    shadowOpacity: 1,
+    // scaleY: 1,
+    // scaleX: 1,
+    sides: 4,
+    stroke: "#000000",
+    strokeWidth: 0,
+    x: 0,
+    y: 1
+  },
+  "Arrow-452178614845": {
+    fill: "#000000",
+    id: "Arrow-452178614845",
+    lineCap: "butt",
+    name: "Arrow",
+    opacity: 1,
+    pointerLength: undefined,
+    pointerWidth: undefined,
+    points: [0, 0, 222.06605157840522, -30.02384727924226],
+    shadowBlur: 0,
+    shadowColor: "#000000",
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    shadowOpacity: 1,
+    stroke: "#000000",
+    strokeWidth: 3,
+    x: 0,
+    y: 8
+  }
+};
+
 const pluginConfig = {
   ...config,
   source: "https://scaleflex.cloudimg.io/v7/demo/river.png",
@@ -71,118 +177,18 @@ const pluginConfig = {
     version: "v7"
   },
   loadableDesignState: {
-    annotations: {
-      "Ellipse-1350843087957": {
-        fill: "#000000",
-        id: "Ellipse-1350843087957",
-        name: "Ellipse",
-        opacity: 1,
-        radiusX: 1,
-        radiusY: 1,
-        rotation: -0,
-        scaleX: 0.9999999999999989,
-        scaleY: 1.0000000000000004,
-        shadowBlur: 0,
-        shadowColor: "#000000",
-        shadowOffsetX: 0,
-        shadowOffsetY: 0,
-        shadowOpacity: 1,
-        stroke: "#000000",
-        strokeWidth: 0,
-        x: 0,
-        y: 4
-      },
-      "Rect-1238543392829": {
-        cornerRadius: 0,
-        fill: "#000000",
-        id: "Rect-1238543392829",
-        name: "Rect",
-        opacity: 1,
-        rotation: 0,
-        scaleX: 1,
-        scaleY: 1,
-        shadowBlur: 0,
-        shadowColor: "#000000",
-        shadowOffsetX: 0,
-        shadowOffsetY: 0,
-        shadowOpacity: 1,
-        stroke: "#000000",
-        strokeWidth: 0,
-        height: 2,
-        width: 2,
-        x: 0,
-        y: 5
-      },
-      "Text-138291345185": {
-        align: "left",
-        fill: "#000000",
-        fontFamily: "Comic-sans",
-        fontSize: 0.1,
-        fontStyle: "bold italic",
-        height: 2,
-        id: "Text-138291345185",
-        letterSpacing: 0,
-        lineHeight: 1,
-        name: "Text",
-        opacity: 1,
-        shadowBlur: 0,
-        shadowColor: "#000000",
-        shadowOffsetX: 0,
-        shadowOffsetY: 0,
-        shadowOpacity: 1,
-        stroke: "#000000",
-        strokeWidth: 1,
-        text: "Filerobot...",
-        width: 5,
-        x: 0,
-        y: 0
-      },
-      "Polygon-671435088951": {
-        fill: "#000000",
-        id: "Polygon-671435088951",
-        name: "Polygon",
-        opacity: 1,
-        radius: 1,
-        shadowBlur: 0,
-        shadowColor: "#000000",
-        shadowOffsetX: 0,
-        shadowOffsetY: 0,
-        shadowOpacity: 1,
-        // scaleY: 1,
-        // scaleX: 1,
-        sides: 4,
-        stroke: "#000000",
-        strokeWidth: 0,
-        x: 0,
-        y: 1
-      },
-      "Arrow-452178614845": {
-        fill: "#000000",
-        id: "Arrow-452178614845",
-        lineCap: "butt",
-        name: "Arrow",
-        opacity: 1,
-        pointerLength: undefined,
-        pointerWidth: undefined,
-        points: [0, 0, 222.06605157840522, -30.02384727924226],
-        shadowBlur: 0,
-        shadowColor: "#000000",
-        shadowOffsetX: 0,
-        shadowOffsetY: 0,
-        shadowOpacity: 1,
-        stroke: "#000000",
-        strokeWidth: 3,
-        x: 0,
-        y: 8
-      }
-    }
+
+    annotations: JSON.parse(localStorage.getItem("state")).annotations
   }
 };
+debugger
 
 function onSave(imageInfo, designState) {
+  debugger
+  localStorage.setItem("state", JSON.stringify(designState));
+
   const url = imageInfo[useCloudimage ? "cloudimageUrl" : "imageBase64"];
   const { fullName: fileName } = imageInfo;
-  debugger
   let tmpLink = document.createElement("a");
   tmpLink.href = url;
 
@@ -377,6 +383,21 @@ function showAccordionContent(event) {
   content.style.display = !content?.offsetWidth ? "block" : "none";
 }
 
+
+const loadButton = document.getElementById("loadButton");
+const resetButton = document.getElementById("resetButton");
+loadButton.addEventListener("click", () => {
+  const loadableState = JSON.parse(localStorage.getItem("state"));
+  filerobotImageEditor.updateState(loadableState);
+  debugger
+});
+resetButton.addEventListener("click", () => {
+  const annotations = initAnnotations;
+  localStorage.setItem("state",JSON.stringify({annotations}));
+  filerobotImageEditor.updateState({ annotations });
+  debugger
+});
+
 crop.addEventListener("change", onChangeTabsHandler);
 finetune.addEventListener("change", onChangeTabsHandler);
 filter.addEventListener("change", onChangeTabsHandler);
@@ -394,3 +415,4 @@ copyButtons.forEach((copyButton) => {
 accordions.forEach((accordion) => {
   accordion.addEventListener("click", showAccordionContent);
 });
+

@@ -15,17 +15,13 @@ import SizeMapper from "../../custom/SizeMapper";
 const MainCanvas = () => {
   const [observeResize] = useResizeObserver();
   const providedAppContext = useStore();
-  debugger
 
-  useEffect(() => {
-    // console.log("---------------------------------------");
-    console.log("canvasHeight: " + providedAppContext.canvasHeight);
-    console.log("canvasWidth: " + providedAppContext.canvasWidth);
-    console.log("initialCanvasHeight: " + providedAppContext.initialCanvasHeight);
-    console.log("initialCanvasWidth: " + providedAppContext.initialCanvasWidth);
-    // console.log("canvasScale: " + providedAppContext.canvasScale);
-    // console.log(providedAppContext.shownImageDimensions);
-  }, [providedAppContext]);
+  // useEffect(() => {
+  //   console.log("canvasHeight: " + providedAppContext.canvasHeight);
+  //   console.log("canvasWidth: " + providedAppContext.canvasWidth);
+  //   console.log("initialCanvasHeight: " + providedAppContext.initialCanvasHeight);
+  //   console.log("initialCanvasWidth: " + providedAppContext.initialCanvasWidth);
+  // }, [providedAppContext]);
 
   const setNewCanvasSize = useCallback(
     ({ width: containerWidth, height: containerHeight }) => {
@@ -41,7 +37,6 @@ const MainCanvas = () => {
 
   const observeCanvasContainerResizing = useCallback((element) => {
     observeResize(element, setNewCanvasSize);
-    debugger
     if (element) {
       const adaptedAnnotations = SizeMapper.convertMmToPixelsAndAddMargins({
         elements: providedAppContext.annotations,

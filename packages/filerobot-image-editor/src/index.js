@@ -32,7 +32,7 @@ class FilerobotImageEditor {
 
   render(additionalConfig) {
     if (typeof additionalConfig === 'object') {
-      this.config = this.config = deepMerge( //TODO WTF
+      /*this.config =*/ this.config = deepMerge( //TODO ???
         this.config || {},
         additionalConfig,
       );
@@ -61,6 +61,7 @@ class FilerobotImageEditor {
   }
 
   updateState(newStatePart) {
+    debugger
     this.#updateStateFnRef?.current?.(newStatePart);
   }
 }

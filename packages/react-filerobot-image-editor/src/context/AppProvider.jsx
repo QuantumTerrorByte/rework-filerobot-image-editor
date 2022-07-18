@@ -44,12 +44,11 @@ const AppProvider = ({ children, config = {} }) => {
     updateTranslations(config.translations, config.language);
   }, [config.useBackendTranslations, config.language, config.translations]);
 
-
+  //bd  => state => konva ?
   const dispatcherDecorator = (dispatch) => (action) => {
-    console.log("resize");
+    console.log("dispatch");
     return dispatch(action);
   };
-  bd  => state => konva
 
   const theme = useTheme();
   const providedValue = useMemo(

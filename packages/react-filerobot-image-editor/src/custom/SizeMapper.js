@@ -7,13 +7,16 @@ export class SizeMapper {
     const bookFormatData = bookFormats[bookFormat];
     const widthPixelToMmRatio = bookSizesPixels.width / bookFormatData.width;
     const heightPixelToMmRatio = bookSizesPixels.height / bookFormatData.height;
+
     for (const [key, value] of Object.entries(elements)) {
       const annotation = elements[key];
-      annotation.x = annotation.x * widthPixelToMmRatio + bookSizesPixels.x;
-      annotation.y = annotation.y * heightPixelToMmRatio + bookSizesPixels.y;
+      if (annotation.name !== "Pen") {
+        annotation.x = annotation.x * widthPixelToMmRatio + bookSizesPixels.x;
+        annotation.y = annotation.y * heightPixelToMmRatio + bookSizesPixels.y;
+      }
       switch (annotation.name) {
-        case "Rect": {
-          debugger
+        case "Rect":
+        case "Image": {
           annotation.width = annotation.width * widthPixelToMmRatio;
           annotation.height = annotation.height * heightPixelToMmRatio;
           break;
@@ -30,7 +33,7 @@ export class SizeMapper {
         case "Text": {
           annotation.width = annotation.width * widthPixelToMmRatio;
           annotation.height = annotation.height * heightPixelToMmRatio;
-          annotation.fontSize = annotation.fontSize + heightPixelToMmRatio;
+          annotation.fontSize = annotation.fontSize * heightPixelToMmRatio;
           break;
         }
       }
@@ -43,17 +46,41 @@ export class SizeMapper {
     const bookFormatData = bookFormats[bookFormat];
     const widthPixelToMmRatio = bookSizesPixels.width / bookFormatData.width;
     const heightPixelToMmRatio = bookSizesPixels.height / bookFormatData.height;
-    for (const [key, value] of Object.entries(elements)) {
-      const annotation = elements[key];
-      if (annotation.name === "Rect") {
-        debugger
-        annotation.width = annotation.width / (widthPixelToMmRatio || 1);
-        annotation.height = annotation.height / (heightPixelToMmRatio || 1);
-        annotation.x = annotation.x / (widthPixelToMmRatio || 1) + bookSizesPixels.x;
-        annotation.y = annotation.y / (heightPixelToMmRatio || 1) + bookSizesPixels.y;
+    const result = JSON.parse(JSON.stringify(elements));
+
+    for (const [key, value] of Object.entries(result)) {
+      const annotation = result[key];
+      if (annotation.name !== "Pen") {
+        annotation.x = (annotation.x - bookSizesPixels.x) / widthPixelToMmRatio;
+        annotation.y = (annotation.y - bookSizesPixels.y) / heightPixelToMmRatio;
+      }
+      switch (annotation.name) {
+        case "Rect":
+        case "Image": {
+          annotation.width = annotation.width / widthPixelToMmRatio * annotation.scaleX;
+          annotation.height = annotation.height / heightPixelToMmRatio * annotation.scaleY;
+          annotation.scaleY = 1;
+          annotation.scaleX = 1;
+          break;
+        }
+        case "Polygon": {
+          annotation.radius = annotation.radius / widthPixelToMmRatio;
+          break;
+        }
+        case "Ellipse": {
+          annotation.radiusX = annotation.radiusX / widthPixelToMmRatio;
+          annotation.radiusY = annotation.radiusY / heightPixelToMmRatio;
+          break;
+        }
+        case "Text": {
+          annotation.width = annotation.width / widthPixelToMmRatio;
+          annotation.height = annotation.height / heightPixelToMmRatio;
+          annotation.fontSize = annotation.fontSize / heightPixelToMmRatio;
+          break;
+        }
       }
     }
-    return { ...elements };
+    return result;
   }
 }
 

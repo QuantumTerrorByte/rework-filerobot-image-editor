@@ -10,7 +10,7 @@ body {
 }
 
 .container {
-    max-width: 970px;
+    /*max-width: 970px;*/
     margin: 0 auto;
 }
 
@@ -174,12 +174,13 @@ body {
 
 .content-wrapper .content .view-button {
     display: flex;
-    width: 328px;
     height: 48px;
     align-items: center;
     justify-content: space-between;
     margin-top: 32px;
     position: relative;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .content-wrapper .content .view-button a {
@@ -243,7 +244,7 @@ body {
     margin-top: 32px;
     display: flex;
     z-index: 99;
-    width: 970px;
+    /*width: 970px;*/
     column-gap: 30px;
 }
 
