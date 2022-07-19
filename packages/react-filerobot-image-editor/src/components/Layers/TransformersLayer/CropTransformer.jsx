@@ -23,7 +23,7 @@ const CropTransformer = () => {
     designLayer,
     originalImage,
     shownImageDimensions,
-    adjustments: { crop = {}, isFlippedX, isFlippedY } = {},
+    adjustments: { crop = {}, isFlippedX} = {}, //x, y, rotate, width, height
     config,
     backgroundX,
     backgroundY,
@@ -80,7 +80,7 @@ const CropTransformer = () => {
     canvasWidth,
     canvasHeight,
     bookFormat
-  ]); // todo add dependencies
+  ]);
 
   //==========================================
 
@@ -121,8 +121,8 @@ const CropTransformer = () => {
   const { x = 0, y = 0, width, height } = attrs;
 
   const cropShapeProps = {
-    x: isFlippedX ? shownImageDimensions.width - x - width : x,
-    y: isFlippedY ? shownImageDimensions.height - y - height : y,
+    x,
+    y,
     ref: cropShapeRef,
     fill: "#FFFFFF",
     scaleX: 1,
@@ -143,10 +143,7 @@ const CropTransformer = () => {
   };
 
   const selectBackground = (e) => {
-    debugger
-    console.log((1,5-1)*2);
     const sp = getCoordinates(e);
-    console.log("SELECT");
     setIsMouseDown(true);
     setBackgroundStartPoint({ x: backgroundX, y: backgroundY });
     setStartPoint(sp);
@@ -171,13 +168,6 @@ const CropTransformer = () => {
         backgroundRef.current.x(backgroundStartPoint.x + changePosition.x + (canvasWidth / 2));
         backgroundRef.current.y(backgroundStartPoint.y + changePosition.y + (canvasHeight / 2));
       }
-      // dispatch({
-      //   type: MOVE_BACKGROUND,
-      //   payload: {
-      //     x: backgroundStartPoint.x + changePosition.x,
-      //     y: backgroundStartPoint.y + changePosition.y
-      //   }
-      // });
     }
   };
   const resizeBackground = (e) => {

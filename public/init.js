@@ -59,7 +59,7 @@ const IMG_EDITOR_TABS = {
   resize: TABS.RESIZE
 };
 
-const initAnnotations =  {
+const initAnnotations = {
   "Ellipse-1350843087957": {
     fill: "#000000",
     id: "Ellipse-1350843087957",
@@ -152,16 +152,33 @@ const initAnnotations =  {
     opacity: 1,
     pointerLength: undefined,
     pointerWidth: undefined,
-    points: [0, 0, 222.06605157840522, -30.02384727924226],
+    points: [0, 0, -2.7034069327336714, 7.214408022844082],
     shadowBlur: 0,
     shadowColor: "#000000",
     shadowOffsetX: 0,
     shadowOffsetY: 0,
     shadowOpacity: 1,
     stroke: "#000000",
-    strokeWidth: 3,
-    x: 0,
-    y: 8
+    strokeWidth: 6,
+    x: 4.429421900904047,
+    y: 0.6834844558863276,
+  },
+  "Line-54567696798": {
+    fill: "#000000",
+    id: "Line-54567696798",
+    lineCap: "butt",
+    name: "Line",
+    opacity: 1,
+    points: [0, 0, -4.14, 3.03],
+    shadowBlur: 0,
+    shadowColor: "#000000",
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    shadowOpacity: 1,
+    stroke: "#000000",
+    strokeWidth: 1,
+    x: 4.176,
+    y: 0.702,
   }
 };
 
@@ -393,7 +410,7 @@ loadButton.addEventListener("click", () => {
 });
 resetButton.addEventListener("click", () => {
   const annotations = initAnnotations;
-  localStorage.setItem("state",JSON.stringify({annotations}));
+  localStorage.setItem("state", JSON.stringify({ annotations }));
   filerobotImageEditor.updateState({ annotations });
   debugger
 });

@@ -1,6 +1,8 @@
 import getCropBookSize from "./getCropBookSize";
 import bookFormats from "./bookFormats/bookFormats";
 
+
+//todo /= syntax
 export class SizeMapper {
   convertMmToPixelsAndAddMargins({ elements, canvasWidth, canvasHeight, bookFormat }) {
     const bookSizesPixels = getCropBookSize({ canvasWidth, canvasHeight, bookFormat });
@@ -17,23 +19,44 @@ export class SizeMapper {
       switch (annotation.name) {
         case "Rect":
         case "Image": {
-          annotation.width = annotation.width * widthPixelToMmRatio;
-          annotation.height = annotation.height * heightPixelToMmRatio;
+          annotation.width *= widthPixelToMmRatio;
+          annotation.height *= heightPixelToMmRatio;
           break;
         }
         case "Polygon": {
-          annotation.radius = annotation.radius * widthPixelToMmRatio;
+          annotation.radius *= widthPixelToMmRatio;
           break;
         }
         case "Ellipse": {
-          annotation.radiusX = annotation.radiusX * widthPixelToMmRatio;
-          annotation.radiusY = annotation.radiusY * heightPixelToMmRatio;
+          annotation.radiusX *= widthPixelToMmRatio;
+          annotation.radiusY *= heightPixelToMmRatio;
           break;
         }
         case "Text": {
-          annotation.width = annotation.width * widthPixelToMmRatio;
-          annotation.height = annotation.height * heightPixelToMmRatio;
-          annotation.fontSize = annotation.fontSize * heightPixelToMmRatio;
+          annotation.width *= widthPixelToMmRatio;
+          annotation.height *= heightPixelToMmRatio;
+          annotation.fontSize *= heightPixelToMmRatio;
+          break;
+        }
+        case "Line":
+        case "Arrow": {
+          annotation.points = annotation.points.map((point, i) => {
+            if (i % 2 === 0) {
+              return point * widthPixelToMmRatio;
+            } else {
+              return point * heightPixelToMmRatio;
+            }
+          });
+          break;
+        }
+        case "Pen": {
+          annotation.points = annotation.points.map((point, i) => {
+            if (i % 2 === 0) {
+              return point * widthPixelToMmRatio + bookSizesPixels.x;
+            } else {
+              return point * heightPixelToMmRatio + bookSizesPixels.y;
+            }
+          });
           break;
         }
       }
@@ -63,19 +86,44 @@ export class SizeMapper {
           annotation.scaleX = 1;
           break;
         }
-        case "Polygon": {
+        case "Polygon": { //todo width/height
           annotation.radius = annotation.radius / widthPixelToMmRatio;
           break;
         }
         case "Ellipse": {
-          annotation.radiusX = annotation.radiusX / widthPixelToMmRatio;
-          annotation.radiusY = annotation.radiusY / heightPixelToMmRatio;
+          annotation.radiusX = annotation.radiusX / widthPixelToMmRatio * (annotation.scaleX || 1);
+          annotation.radiusY = annotation.radiusY / heightPixelToMmRatio * (annotation.scaleY || 1);
+          annotation.scaleY = 1;
+          annotation.scaleX = 1;
           break;
         }
         case "Text": {
-          annotation.width = annotation.width / widthPixelToMmRatio;
-          annotation.height = annotation.height / heightPixelToMmRatio;
+          annotation.width = annotation.width / widthPixelToMmRatio * (annotation.scaleX || 1);
+          annotation.height = annotation.height / heightPixelToMmRatio * (annotation.scaleY || 1);
+          annotation.scaleY = 1;
+          annotation.scaleX = 1;
           annotation.fontSize = annotation.fontSize / heightPixelToMmRatio;
+          break;
+        }
+        case "Line":
+        case "Arrow": {
+          annotation.points = annotation.points.map((point, i) => {
+            if (i % 2 === 0) {
+              return point / widthPixelToMmRatio;
+            } else {
+              return point / heightPixelToMmRatio;
+            }
+          });
+          break;
+        }
+        case "Pen": {
+          annotation.points = annotation.points.map((point, i) => {
+            if (i % 2 === 0) {
+              return (point - bookSizesPixels.x) / widthPixelToMmRatio;
+            } else {
+              return (point - bookSizesPixels.y) / heightPixelToMmRatio;
+            }
+          });
           break;
         }
       }
