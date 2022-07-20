@@ -1,5 +1,6 @@
 import getCropBookSize from "./getCropBookSize";
 import bookFormats from "./bookFormats/bookFormats";
+import finetunesStrsToClasses from "../utils/finetunesStrsToClasses";
 
 
 //todo /= syntax
@@ -60,6 +61,12 @@ export class SizeMapper {
           break;
         }
       }
+
+      //todo extract
+      if (Array.isArray(annotation.filters)){
+        annotation.filters = finetunesStrsToClasses(annotation.filters);
+      }
+
     }
     return { ...elements };
   }

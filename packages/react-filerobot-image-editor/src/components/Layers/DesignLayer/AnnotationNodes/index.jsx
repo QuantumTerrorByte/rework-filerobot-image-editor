@@ -1,14 +1,14 @@
 /** External Dependencies */
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
 
 /** Internal Dependencies */
-import { useAnnotationEvents, useStore } from 'hooks';
-import MemoizedAnnotation from './MemoizedAnnotation';
+import { useAnnotationEvents, useStore } from "hooks";
+import MemoizedAnnotation from "./MemoizedAnnotation";
 
 const AnnotationNodes = () => {
   const { annotations = {}, selectionsIds = [] } = useStore();
   const annotationEvents = useAnnotationEvents();
-
+  debugger
   return useMemo(
     () =>
       Object.values(annotations).map((annotation) => (
@@ -19,7 +19,7 @@ const AnnotationNodes = () => {
           selectionsIds={selectionsIds}
         />
       )),
-    [annotations, annotationEvents, selectionsIds],
+    [annotations, annotationEvents, selectionsIds]
   );
 };
 

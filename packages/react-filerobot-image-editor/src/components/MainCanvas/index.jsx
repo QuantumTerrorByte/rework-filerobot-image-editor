@@ -44,6 +44,7 @@ const MainCanvas = () => {
         canvasWidth: element.clientWidth,
         bookFormat: providedAppContext.bookFormat
       });
+      
       providedAppContext.dispatch({
         type: SET_RESIZED_ANNO,
         payload: adaptedAnnotations

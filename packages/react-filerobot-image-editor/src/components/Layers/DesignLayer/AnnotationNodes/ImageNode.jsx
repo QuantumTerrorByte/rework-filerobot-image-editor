@@ -1,5 +1,5 @@
 /** External Dependencies */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from 'prop-types';
 import { Image } from 'react-konva';
 
@@ -30,11 +30,19 @@ const ImageNode = ({
   ...otherProps
 }) => {
   const [imgElement, setImgElement] = useState(null);
+  const nodeRef = useRef();
+
   useEffect(() => {
     if (typeof image === 'string') {
       loadImage(image).then(setImgElement);
     }
   }, [image]);
+
+  useEffect(() => { //TODO if filters not null
+    if (imgElement) {
+      nodeRef.current.cache();
+    }
+  }, [imgElement]);
 
   const isImgElement = image instanceof HTMLImageElement;
   if (!isImgElement && !imgElement) {
@@ -45,6 +53,7 @@ const ImageNode = ({
 
   return (
     <Image
+      ref={nodeRef}
       id={id}
       name={name}
       rotation={rotation}

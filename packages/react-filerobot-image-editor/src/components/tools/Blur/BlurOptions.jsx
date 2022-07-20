@@ -1,28 +1,29 @@
 /** External Dependencies */
-import React from 'react';
-import Konva from 'konva';
+import React from "react";
+import Konva from "konva";
 
 /** Internal Dependencies */
-import { useFinetune } from 'hooks';
-import restrictNumber from 'utils/restrictNumber';
-import Slider from 'components/common/Slider';
+import { useFinetune, useStore } from "hooks";
+import restrictNumber from "utils/restrictNumber";
+import Slider from "components/common/Slider";
 
 const MIN_VALUE = 0;
 const DEFAULT_VALUE = {
-  blurRadius: MIN_VALUE,
+  blurRadius: MIN_VALUE
 };
 const MAX_VALUE = 100;
 const sliderStyle = { width: 150, padding: 0 };
 
 const BlurOptions = () => {
+  const { annotations, selectionsIds } = useStore();
   const [finetuneProps, setFinetuneProps] = useFinetune(
     Konva.Filters.Blur,
-    DEFAULT_VALUE,
+    DEFAULT_VALUE
   );
 
   const changeValue = (value) => {
     setFinetuneProps({
-      blurRadius: restrictNumber(value, MIN_VALUE, MAX_VALUE),
+      blurRadius: restrictNumber(value, MIN_VALUE, MAX_VALUE)
     });
   };
 

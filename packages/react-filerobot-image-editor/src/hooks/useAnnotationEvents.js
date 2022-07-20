@@ -74,13 +74,13 @@ const useAnnotationEvents = () => {
     });
     // TODO: Remove this once we implement the possibility to select annotation
     // while any annotation tool is opened without changing the tool.
-    dispatch({
-      type: SELECT_TOOL,
-      payload: {
-        toolId: e.target.name(),
-        keepSelections: multiple
-      }
-    });
+    // dispatch({
+    //   type: SELECT_TOOL,
+    //   payload: {
+    //     toolId: e.target.name(),
+    //     keepSelections: multiple
+    //   }
+    // });
   }, []);
 
   return useMemo(

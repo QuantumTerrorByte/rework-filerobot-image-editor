@@ -8,7 +8,8 @@ const getCropBookSize = ({ canvasWidth, canvasHeight, bookFormat }) => {
     x: (canvasWidth - cropWidth) / 2,
     y: (canvasHeight - cropHeight) / 2,
     width: cropWidth,
-    height: cropHeight
+    height: cropHeight,
+    ratio: bookFormats[bookFormat].getRatio()
   };
 };
 

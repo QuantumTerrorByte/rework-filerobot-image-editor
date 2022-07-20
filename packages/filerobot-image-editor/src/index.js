@@ -61,7 +61,6 @@ class FilerobotImageEditor {
   }
 
   updateState(newStatePart) {
-    debugger
     this.#updateStateFnRef?.current?.(newStatePart);
   }
 }

@@ -88,7 +88,6 @@ const SaveButton = () => {
         canvasHeight,
         bookFormat
       });
-    debugger
     const savingResult = onSaveFn(
       transformedData.imageData,
       { ...transformedData.designState, annotations: transformedMappedAnnotations }

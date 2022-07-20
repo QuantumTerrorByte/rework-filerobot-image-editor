@@ -31,7 +31,6 @@ const Crop = ({ selectTool, isSelected }) => {
       <div className={"crop-panel_rotate-flip-container"}>
         <RotateOptions />
         <div className={"flip-button"} onClick={() => {
-          debugger
           dispatch({
             type: FLIP_BACKGROUND
           });

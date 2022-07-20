@@ -2,6 +2,8 @@
 // eslint-disable-next-line import/no-named-as-default-member
 import FilerobotImageEditor from "../packages/filerobot-image-editor/src";
 import config from "./demo-config";
+import { tempImgData } from "./tempImgData";
+import Konva from "konva";
 
 function getElementById(id) {
   return document.getElementById(id);
@@ -80,27 +82,6 @@ const initAnnotations = {
     x: 0,
     y: 4
   },
-  "Rect-1238543392829": {
-    cornerRadius: 0,
-    fill: "#000000",
-    id: "Rect-1238543392829",
-    name: "Rect",
-    opacity: 1,
-    rotation: 0,
-    scaleX: 1,
-    scaleY: 1,
-    shadowBlur: 0,
-    shadowColor: "#000000",
-    shadowOffsetX: 0,
-    shadowOffsetY: 0,
-    shadowOpacity: 1,
-    stroke: "#000000",
-    strokeWidth: 0,
-    height: 2,
-    width: 2,
-    x: 0,
-    y: 5
-  },
   "Text-138291345185": {
     align: "left",
     fill: "#000000",
@@ -161,7 +142,7 @@ const initAnnotations = {
     stroke: "#000000",
     strokeWidth: 6,
     x: 4.429421900904047,
-    y: 0.6834844558863276,
+    y: 0.6834844558863276
   },
   "Line-54567696798": {
     fill: "#000000",
@@ -178,7 +159,52 @@ const initAnnotations = {
     stroke: "#000000",
     strokeWidth: 1,
     x: 4.176,
-    y: 0.702,
+    y: 0.702
+  },
+  "Rect-1238543392829": {
+    cornerRadius: 0,
+    fill: "#3640b7",
+    id: "Rect-1238543392829",
+    name: "Rect",
+    opacity: 1,
+    rotation: 0,
+    scaleX: 1,
+    scaleY: 1,
+    shadowBlur: 0,
+    shadowColor: "#000000",
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    shadowOpacity: 1,
+    stroke: "#000000",
+    strokeWidth: 0,
+    height: 2,
+    width: 2,
+    x: 0,
+    y: 5,
+    filters: ["Brighten"],
+    brightness: 0.7,
+  },
+  "Image-503984150066": {
+    height: 2.4211729556059134,
+    id: "Image-503984150066",
+    image: tempImgData,
+    name: "Image",
+    opacity: 1,
+    rotation: 0,
+    scaleX: 1,
+    scaleY: 1,
+    shadowBlur: 0,
+    shadowColor: "#000000",
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    shadowOpacity: 1,
+    stroke: "#000000",
+    strokeWidth: 0,
+    width: 2.873856850988324,
+    x: 2.3798294877570436,
+    y: 5.864266981610922,
+    filters: ["Blur"],
+    blurRadius: 22
   }
 };
 
@@ -194,14 +220,11 @@ const pluginConfig = {
     version: "v7"
   },
   loadableDesignState: {
-
     annotations: JSON.parse(localStorage.getItem("state")).annotations
   }
 };
-debugger
 
 function onSave(imageInfo, designState) {
-  debugger
   localStorage.setItem("state", JSON.stringify(designState));
 
   const url = imageInfo[useCloudimage ? "cloudimageUrl" : "imageBase64"];
@@ -406,13 +429,11 @@ const resetButton = document.getElementById("resetButton");
 loadButton.addEventListener("click", () => {
   const loadableState = JSON.parse(localStorage.getItem("state"));
   filerobotImageEditor.updateState(loadableState);
-  debugger
 });
 resetButton.addEventListener("click", () => {
   const annotations = initAnnotations;
   localStorage.setItem("state", JSON.stringify({ annotations }));
   filerobotImageEditor.updateState({ annotations });
-  debugger
 });
 
 crop.addEventListener("change", onChangeTabsHandler);
